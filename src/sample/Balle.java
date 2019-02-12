@@ -21,13 +21,13 @@ public class Balle {
             float dx = autres[i].x - x;
             float dy = autres[i].y - y;
             float distance = (float) Math.sqrt(dx * dx + dy * dy);
-            float minDist = autres[i].diametre / 2 + diametre / 2;
+            float minDist = autres[i].diametre + diametre;
             if (distance < minDist) {
                 float angle = (float) Math.atan2(dy, dx);
                 float targetX = (float) (x + Math.cos(angle) * minDist);
                 float targetY = y + (float) (Math.sin(angle) * minDist);
-                float ax = (float) ((targetX - autres[i].x) * 0.05); //Spring
-                float ay = (float) ((targetY - autres[i].y) * 0.05);
+                float ax = (float) ((targetX - autres[i].x) * 0.01); //Spring
+                float ay = (float) ((targetY - autres[i].y) * 0.01);
                 vx -= ax;
                 vy -= ay;
                 autres[i].vx += ax;
@@ -37,28 +37,29 @@ public class Balle {
     }
 
     void move() {
-        vy += 0.03; //Gravité
+        vy += 0.05; //Gravité
         x += vx;
         y += vy;
-        if (x + diametre / 2 > 640) { //Width
-            x = 640 - diametre / 2;
-            vx *= -0.9; //Friction
-        } else if (x - diametre / 2 < 0) {
-            x = diametre / 2;
-            vx *= -0.9;
+        if (x + diametre > 640) { //Width
+            x = 640 - diametre;
+            vx *= -0.3; //Friction
+        } else if (x - diametre < 0) {
+            x = diametre;
+            vx *= -0.3;
         }
-        if (y + diametre / 2 > 360) {
-            y = 360 - diametre / 2;
-            vy *= -0.9;
-        } else if (y - diametre / 2 < 0) {
-            y = diametre / 2;
-            vy *= -0.9;
+        if (y + diametre > 360) {
+            y = 360 - diametre;
+            vy *= -0.3;
+        } else if (y - diametre < 0) {
+            y = diametre;
+            vy *= -0.3;
         }
     }
 
     Ellipse display() {
         Ellipse retour = new Ellipse(x, y, diametre, diametre);
         retour.setFill(Color.RED);
+        retour.setStroke(Color.BLACK);
         return retour;
     }
 }
