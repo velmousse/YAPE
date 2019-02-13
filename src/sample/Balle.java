@@ -4,9 +4,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 
 public class Balle {
-    public float x, y, diametre, vx = 0, vy = 0;
-    public int id;
-    Balle[] autres;
+    private double x, y, diametre, vx = 0, vy = 0, gravite = 0.07, spring = 0.7, friction = -0.7;
+    private int id;
+    private Balle[] autres;
 
     public Balle(float xin, float yin, float din, int idin, Balle[] ain) {
         x = xin;
@@ -16,18 +16,18 @@ public class Balle {
         autres = ain;
     }
 
-    public void collide() {
+    public void collision() {
         for (int i = id + 1; i < autres.length; i++) {
-            float dx = autres[i].x - x;
-            float dy = autres[i].y - y;
-            float distance = (float) Math.sqrt(dx * dx + dy * dy);
-            float minDist = autres[i].diametre + diametre;
+            double dx = autres[i].x - x;
+            double dy = autres[i].y - y;
+            double distance = Math.sqrt(dx * dx + dy * dy);
+            double minDist = autres[i].diametre + diametre;
             if (distance < minDist) {
-                float angle = (float) Math.atan2(dy, dx);
-                float targetX = (float) (x + Math.cos(angle) * minDist);
-                float targetY = y + (float) (Math.sin(angle) * minDist);
-                float ax = (float) ((targetX - autres[i].x) * 0.01); //Spring
-                float ay = (float) ((targetY - autres[i].y) * 0.01);
+                double angle = Math.atan2(dy, dx);
+                double targetX = (x + Math.cos(angle) * minDist);
+                double targetY = y + (Math.sin(angle) * minDist);
+                double ax = ((targetX - autres[i].x) * spring);
+                double ay = ((targetY - autres[i].y) * spring);
                 vx -= ax;
                 vy -= ay;
                 autres[i].vx += ax;
@@ -36,27 +36,27 @@ public class Balle {
         }
     }
 
-    void move() {
-        vy += 0.05; //Gravité
+    void mouvement() {
+        vy += gravite;
         x += vx;
         y += vy;
-        if (x + diametre > 640) { //Width
+        if (x + diametre > 640) {
             x = 640 - diametre;
-            vx *= -0.3; //Friction
+            vx *= friction;
         } else if (x - diametre < 0) {
             x = diametre;
-            vx *= -0.3;
+            vx *= friction;
         }
         if (y + diametre > 360) {
             y = 360 - diametre;
-            vy *= -0.3;
+            vy *= friction;
         } else if (y - diametre < 0) {
             y = diametre;
-            vy *= -0.3;
+            vy *= friction;
         }
     }
 
-    Ellipse display() {
+    Ellipse affichage() {
         Ellipse retour = new Ellipse(x, y, diametre, diametre);
         retour.setFill(Color.RED);
         retour.setStroke(Color.BLACK);

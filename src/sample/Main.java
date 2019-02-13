@@ -24,7 +24,7 @@ public class Main extends Application {
         Canvas canvas = new Canvas(640, 360);
         GraphicsContext graphics = canvas.getGraphicsContext2D();
 
-        int numBalls = 8;
+        int numBalls = 7;
         Balle[] balles = new Balle[numBalls];
 
         for (int i = 0; i < numBalls; i++) {
@@ -38,12 +38,12 @@ public class Main extends Application {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         for (int i = 0; i < balles.length; i++) {
-                            balles[i].collide();
-                            balles[i].move();
+                            balles[i].collision();
+                            balles[i].mouvement();
                             if (first[0])
-                                group.getChildren().add(balles[i].display());
+                                group.getChildren().add(balles[i].affichage());
                             else
-                                group.getChildren().set(i, balles[i].display());
+                                group.getChildren().set(i, balles[i].affichage());
                         }
                         first[0] = false;
                     }
