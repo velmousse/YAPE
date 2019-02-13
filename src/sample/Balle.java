@@ -4,16 +4,18 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 
 public class Balle {
-    private double x, y, diametre, vx = 0, vy = 0, gravite = 0.07, spring = 0.7, friction = -0.7;
+    private double x, y, diametre, vx = 0, vy = 0, gravite = 0.08, spring = 0.7, friction = -0.6;
     private int id;
     private Balle[] autres;
+    private Color couleur;
 
-    public Balle(float xin, float yin, float din, int idin, Balle[] ain) {
+    public Balle(float xin, float yin, float din, int idin, Balle[] ain, Color couleurin) {
         x = xin;
         y = yin;
         diametre = din;
         id = idin;
         autres = ain;
+        couleur = couleurin;
     }
 
     public void collision() {
@@ -23,11 +25,11 @@ public class Balle {
             double distance = Math.sqrt(dx * dx + dy * dy);
             double minDist = autres[i].diametre + diametre;
             if (distance < minDist) {
-                double angle = Math.atan2(dy, dx);
-                double targetX = (x + Math.cos(angle) * minDist);
-                double targetY = y + (Math.sin(angle) * minDist);
-                double ax = ((targetX - autres[i].x) * spring);
-                double ay = ((targetY - autres[i].y) * spring);
+                double angle = Math.atan2(dy, dx),
+                targetX = (x + Math.cos(angle) * minDist),
+                targetY = y + (Math.sin(angle) * minDist),
+                ax = ((targetX - autres[i].x) * spring),
+                ay = ((targetY - autres[i].y) * spring);
                 vx -= ax;
                 vy -= ay;
                 autres[i].vx += ax;
@@ -58,8 +60,9 @@ public class Balle {
 
     Ellipse affichage() {
         Ellipse retour = new Ellipse(x, y, diametre, diametre);
-        retour.setFill(Color.RED);
+        retour.setFill(couleur);
         retour.setStroke(Color.BLACK);
+        retour.setStrokeWidth(1);
         return retour;
     }
 }
