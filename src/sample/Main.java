@@ -10,67 +10,81 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.scene.shape.Ellipse;
+import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.security.Key;
+import java.util.ArrayList;
+
 public class Main extends Application {
+    private Image bowling = new Image("file:ressources/bowling.png");
+    private Image tennis = new Image("file:ressources/tennis.png");
+    private Scene scene;
+    private Group group;
+    private final Boolean[] selection = new Boolean[2];
+    private int numBalles = 0;
+    private ArrayList<Balle> balles = new ArrayList<>();
+
+    public static void main(String[] args) { launch(args); }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        final Boolean[] first = new Boolean[1];
-        first[0] = true;
-        Group group = new Group();
+    public void start(Stage primaryStage) throws Exception{
+        for (int i = 0; i < selection.length; i++) selection[i] = false;
+        group = new Group();
         primaryStage.setTitle("");
-        Canvas canvas = new Canvas(640, 360);
+        Canvas canvas = new Canvas(800, 500);
         GraphicsContext graphics = canvas.getGraphicsContext2D();
+        scene = new Scene(group, 800, 500);
 
-        int numBalls = 12;
-        Balle[] balles = new Balle[numBalls];
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.R)
+                resetScene();
+            else if (event.getCode() == KeyCode.DIGIT1) {
+                if (!selection[0]) {
+                    for (int i = 0; i < selection.length; i++) selection[i] = false;
+                    selection[0] = true;
+                } else
+                    for (int i = 0; i < selection.length; i++) selection[i] = false;
+            } else if (event.getCode() == KeyCode.DIGIT2) {
+                if (!selection[1]) {
+                    for (int i = 0; i < selection.length; i++) selection[i] = false;
+                    selection[1] = true;
+                } else
+                    for (int i = 0; i < selection.length; i++) selection[i] = false;
+            }
+        });
 
-        for (int i = 0; i < numBalls; i++) {
-            balles[i] = new Balle((float) Math.random() * 640, (float) Math.random() * 360, (float) Math.random() * 40 + 30, i, balles);
-        }
+        scene.setOnMouseClicked(event -> {
+            if (selection[0]) {
+                balles.add(new Bowling((float) event.getX(), (float) event.getY(), balles.size(), balles, bowling));
+                group.getChildren().add(balles.get(numBalles).affichage());
+                numBalles++;
+            } else if (selection[1]) {
+                balles.add(new Tennis((float) event.getX(), (float) event.getY(), balles.size(), balles, tennis));
+                group.getChildren().add(balles.get(numBalles).affichage());
+                numBalles++;
+            }
+        });
+
+        primaryStage.setScene(scene);
 
 
-
-
-        Menu menu= new Menu("Items");
-        MenuBar menuBar= new MenuBar(menu);
-        VBox vBox = new VBox(menuBar);
-        vBox.setMinWidth(640);
-        vBox.setMaxWidth(640);
-        MenuItem balleBowling= new MenuItem("Balle de Bowling");
-        MenuItem balleTennis= new MenuItem("Balle de tennis");
-        menu.getItems().addAll(balleBowling,balleTennis);
-        Group group1= new Group(group,vBox);
-
-
-
-        primaryStage.setScene(new Scene(group1, 640, 360));
-
-
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0),
-                new EventHandler<ActionEvent>() {
-
-                    @Override
-                    public void handle(ActionEvent actionEvent) {
-                        for (int i = 0; i < balles.length; i++) {
-                            balles[i].collide();
-                            balles[i].move();
-                            if (first[0])
-                                group.getChildren().add(balles[i].display());
-                            else
-                                group.getChildren().set(i, balles[i].display());
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0), new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    if (balles.size() > 0) {
+                        for (int i = 0; i < balles.size(); i++) {
+                            balles.get(i).collision();
+                            balles.get(i).mouvement();
+                            group.getChildren().set(i, balles.get(i).affichage());
                         }
                         first[0] = false;
                     }
                 }
+            }
         ), new KeyFrame(Duration.millis(10)));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
@@ -78,7 +92,9 @@ public class Main extends Application {
 
     }
 
-    public static void main(String[] args) {
-        launch(args);
+    public void resetScene() {
+        balles.clear();
+        group.getChildren().clear();
+        numBalles = 0;
     }
 }

@@ -1,65 +1,63 @@
 package sample;
 
-import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Ellipse;
 
+import java.util.ArrayList;
+
 public class Balle {
-    public float x, y, diametre, vx = 0, vy = 0;
-    public int id;
-    Balle[] autres;
+    protected double x, y, diametre, vx = 0, vy = 0, gravite = 0.08, spring = 0.7, friction;
+    protected int id;
+    protected ArrayList<Balle> autres = new ArrayList<>();
+    protected ImagePattern pattern;
 
-    public Balle(float xin, float yin, float din, int idin, Balle[] ain) {
-        x = xin;
-        y = yin;
-        diametre = din;
-        id = idin;
-        autres = ain;
-    }
+    private int width = 800, height = 500;
 
-    public void collide() {
-        for (int i = id + 1; i < autres.length; i++) {
-            float dx = autres[i].x - x;
-            float dy = autres[i].y - y;
-            float distance = (float) Math.sqrt(dx * dx + dy * dy);
-            float minDist = autres[i].diametre + diametre;
+
+    public void collision() {
+        for (int i = id + 1; i < autres.size(); i++) {
+            double dx = autres.get(i).x - x;
+            double dy = autres.get(i).y - y;
+            double distance = Math.sqrt(dx * dx + dy * dy);
+            double minDist = autres.get(i).diametre + diametre;
             if (distance < minDist) {
-                float angle = (float) Math.atan2(dy, dx);
-                float targetX = (float) (x + Math.cos(angle) * minDist);
-                float targetY = y + (float) (Math.sin(angle) * minDist);
-                float ax = (float) ((targetX - autres[i].x) * 0.01); //Spring
-                float ay = (float) ((targetY - autres[i].y) * 0.01);
+                double angle = Math.atan2(dy, dx),
+                targetX = (x + Math.cos(angle) * minDist),
+                targetY = y + (Math.sin(angle) * minDist),
+                ax = ((targetX - autres.get(i).x) * spring),
+                ay = ((targetY - autres.get(i).y) * spring);
                 vx -= ax;
                 vy -= ay;
-                autres[i].vx += ax;
-                autres[i].vy += ay;
+                autres.get(i).vx += ax;
+                autres.get(i).vy += ay;
             }
         }
     }
 
-    void move() {
-        vy += 0.05; //Gravité
+    public void mouvement() {
+        vy += gravite;
         x += vx;
         y += vy;
-        if (x + diametre > 640) { //Width
-            x = 640 - diametre;
-            vx *= -0.3; //Friction
+        if (x + diametre > width) {
+            x = width - diametre;
+            vx *= friction;
         } else if (x - diametre < 0) {
             x = diametre;
-            vx *= -0.3;
+            vx *= friction;
         }
-        if (y + diametre > 360) {
-            y = 360 - diametre;
-            vy *= -0.3;
+        if (y + diametre > height) {
+            y = height - diametre;
+            vy *= friction;
         } else if (y - diametre < 0) {
             y = diametre;
-            vy *= -0.3;
+            vy *= friction;
         }
     }
 
-    Ellipse display() {
+    public Ellipse affichage() {
         Ellipse retour = new Ellipse(x, y, diametre, diametre);
-        retour.setFill(Color.RED);
-        retour.setStroke(Color.BLACK);
+        retour.setFill(pattern);
+        retour.autosize();
         return retour;
     }
 }
