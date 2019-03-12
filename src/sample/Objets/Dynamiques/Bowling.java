@@ -1,7 +1,8 @@
-package sample;
+package sample.Objets.Dynamiques;
 
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
+import sample.Objets.Dynamiques.Balle;
 
 import java.util.ArrayList;
 

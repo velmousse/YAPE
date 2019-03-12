@@ -4,19 +4,17 @@ import javafx.animation.*;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import sample.Objets.Dynamiques.Balle;
+import sample.Objets.Dynamiques.Bowling;
+import sample.Objets.Fixes.PlanIncline;
+import sample.Objets.Dynamiques.Tennis;
 
-import java.security.Key;
 import java.util.ArrayList;
 
 public class Main extends Application {
@@ -25,9 +23,10 @@ public class Main extends Application {
     private Scene scene;
     private Group group;
     private final Boolean[] selection = new Boolean[3];
-    private int numBalles = 0;
+    private int numBalles = 0, numPlanInclines = 0;
+
     private ArrayList<Balle> balles = new ArrayList<>();
-    public ArrayList<PlanIncliné> planInclinés= new ArrayList<>();
+    private ArrayList<PlanIncline> planInclines = new ArrayList<>();
 
     public static void main(String[] args) { launch(args); }
 
@@ -42,24 +41,14 @@ public class Main extends Application {
             if (event.getCode() == KeyCode.R)
                 resetScene();
             else if (event.getCode() == KeyCode.DIGIT1) {
-                if (!selection[0]) {
-                    for (int i = 0; i < selection.length; i++) selection[i] = false;
-                    selection[0] = true;
-                } else
-                    for (int i = 0; i < selection.length; i++) selection[i] = false;
+                for (int i = 0; i < selection.length; i++) selection[i] = false;
+                selection[0] = true;
             } else if (event.getCode() == KeyCode.DIGIT2) {
-                if (!selection[1]) {
-                    for (int i = 0; i < selection.length; i++) selection[i] = false;
-                    selection[1] = true;
-                } else
-                    for (int i = 0; i < selection.length; i++) selection[i] = false;
-            }
-            else if (event.getCode() == KeyCode.DIGIT3) {
-                if (!selection[2]) {
-                    for (int i = 0; i < selection.length; i++) selection[i] = false;
-                    selection[2] = true;
-                } else
-                    for (int i = 0; i < selection.length; i++) selection[i] = false;
+                for (int i = 0; i < selection.length; i++) selection[i] = false;
+                selection[1] = true;
+            } else if (event.getCode() == KeyCode.DIGIT3) {
+                for (int i = 0; i < selection.length; i++) selection[i] = false;
+                selection[2] = true;
             }
         });
 
@@ -72,10 +61,10 @@ public class Main extends Application {
                 balles.add(new Tennis((float) event.getX(), (float) event.getY(), balles.size(), balles, tennis));
                 group.getChildren().add(balles.get(numBalles).affichage());
                 numBalles++;
-            }
-            else if(selection[2]){
-                planInclinés.add(new PlanIncliné((float)event.getX(),(float)event.getY()));
-                group.getChildren().add(planInclinés.get(0).affichage());
+            } else if(selection[2]){
+                planInclines.add(new PlanIncline((float) event.getX(),(float) event.getY()));
+                group.getChildren().add(planInclines.get(numPlanInclines).affichage());
+                numPlanInclines++;
             }
         });
 
@@ -85,6 +74,10 @@ public class Main extends Application {
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0), new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
+                    if (planInclines.size() > 0) {
+                        for (int i = 0; i < planInclines.size(); i++)
+                            planInclines.get(i).affichage();
+                    }
                     if (balles.size() > 0) {
                         for (int i = 0; i < balles.size(); i++) {
                             balles.get(i).mouvement();
@@ -102,7 +95,9 @@ public class Main extends Application {
 
     public void resetScene() {
         balles.clear();
+        planInclines.clear();
         group.getChildren().clear();
         numBalles = 0;
+        numPlanInclines = 0;
     }
 }

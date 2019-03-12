@@ -1,4 +1,4 @@
-package sample;
+package sample.Objets.Dynamiques;
 
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Ellipse;
