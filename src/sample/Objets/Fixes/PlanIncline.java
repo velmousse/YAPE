@@ -4,18 +4,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import sample.Objets.Fixes.ObjetFixe;
 
+import java.util.ArrayList;
+
 public class PlanIncline  extends ObjetFixe {
 
-    public PlanIncline(float x, float y) {
+    public PlanIncline(float x, float y, ArrayList<PlanIncline> _a) {
         this.x = x;
         this.y = y;
     }
 
-    public Rectangle affichage(){
-        Rectangle rectangle = new Rectangle(x, y, 40, 50);
-        rectangle.setRotate(-45);
-        rectangle.setFill(Color.BLACK);
-        return rectangle;
-    }
 }
 

@@ -63,7 +63,7 @@ public class Main extends Application {
             }
         });
 
-        scene.setOnMouseClicked(event -> {
+        scene.setOnMouseClicked(event -> {  //Ne pas oublier de vérifier s'il y a un imbriquement
             if (selection[0]) {
                 balles.add(new Bowling((float) event.getX(), (float) event.getY(), balles.size(), balles, bowling));
                 group.getChildren().add(balles.get(numBalles).affichage());
@@ -75,7 +75,7 @@ public class Main extends Application {
                 numBalles++;
                 numObjets++;
             } else if(selection[2]){
-                planInclines.add(new PlanIncline((float) event.getX(),(float) event.getY()));
+                planInclines.add(new PlanIncline((float) event.getX(),(float) event.getY(), null));
                 group.getChildren().add(planInclines.get(numPlanInclines).affichage());
                 numPlanInclines++;
                 numObjets++;
