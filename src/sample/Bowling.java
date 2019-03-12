@@ -13,7 +13,8 @@ public class Bowling extends Balle {
         id = _id;
         autres = _a;
         diametre = 30;
-        friction = -0.9;
+        friction = -.5;
+        masse=6;
         pattern = new ImagePattern(image);
     }
 }

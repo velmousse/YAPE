@@ -24,9 +24,10 @@ public class Main extends Application {
     private Image tennis = new Image("file:ressources/tennis.png");
     private Scene scene;
     private Group group;
-    private final Boolean[] selection = new Boolean[2];
+    private final Boolean[] selection = new Boolean[3];
     private int numBalles = 0;
     private ArrayList<Balle> balles = new ArrayList<>();
+    public ArrayList<PlanIncliné> planInclinés= new ArrayList<>();
 
     public static void main(String[] args) { launch(args); }
 
@@ -35,8 +36,6 @@ public class Main extends Application {
         for (int i = 0; i < selection.length; i++) selection[i] = false;
         group = new Group();
         primaryStage.setTitle("");
-        Canvas canvas = new Canvas(800, 500);
-        GraphicsContext graphics = canvas.getGraphicsContext2D();
         scene = new Scene(group, 800, 500);
 
         scene.setOnKeyPressed(event -> {
@@ -55,6 +54,13 @@ public class Main extends Application {
                 } else
                     for (int i = 0; i < selection.length; i++) selection[i] = false;
             }
+            else if (event.getCode() == KeyCode.DIGIT3) {
+                if (!selection[2]) {
+                    for (int i = 0; i < selection.length; i++) selection[i] = false;
+                    selection[2] = true;
+                } else
+                    for (int i = 0; i < selection.length; i++) selection[i] = false;
+            }
         });
 
         scene.setOnMouseClicked(event -> {
@@ -67,6 +73,10 @@ public class Main extends Application {
                 group.getChildren().add(balles.get(numBalles).affichage());
                 numBalles++;
             }
+            else if(selection[2]){
+                planInclinés.add(new PlanIncliné((float)event.getX(),(float)event.getY()));
+                group.getChildren().add(planInclinés.get(0).affichage());
+            }
         });
 
         primaryStage.setScene(scene);
@@ -77,11 +87,10 @@ public class Main extends Application {
                 public void handle(ActionEvent actionEvent) {
                     if (balles.size() > 0) {
                         for (int i = 0; i < balles.size(); i++) {
-                            balles.get(i).collision();
                             balles.get(i).mouvement();
+                            balles.get(i).collision();
                             group.getChildren().set(i, balles.get(i).affichage());
                         }
-                        first[0] = false;
                     }
                 }
             }
@@ -89,7 +98,6 @@ public class Main extends Application {
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
         primaryStage.show();
-
     }
 
     public void resetScene() {
