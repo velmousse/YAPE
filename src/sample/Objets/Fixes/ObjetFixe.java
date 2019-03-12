@@ -1,5 +1,7 @@
 package sample.Objets.Fixes;
 
-public class ObjetFixe {
+import sample.Objets.Objet;
+
+public class ObjetFixe extends Objet{
     protected float x, y, friction;
 }

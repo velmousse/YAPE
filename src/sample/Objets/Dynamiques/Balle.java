@@ -2,10 +2,11 @@ package sample.Objets.Dynamiques;
 
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Ellipse;
+import sample.Objets.Objet;
 
 import java.util.ArrayList;
 
-public class Balle {
+public class Balle extends Objet{
     protected double x, y, diametre, vx = 0, vy = 0, gravite = 0.09, spring = 0.7, friction,masse;
     protected int id;
     protected ArrayList<Balle> autres = new ArrayList<>();
