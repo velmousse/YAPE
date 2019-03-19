@@ -7,15 +7,13 @@ import sample.Objets.Objet;
 import java.util.ArrayList;
 
 public class Balle extends Objet{
-    protected double x, y, diametre, vx = 0, vy = 0, gravite = 0.09, spring = 0.7, friction,masse;
+    protected double x, y, diametre, vx = 0, vy = 0, gravite = 0.09, spring = 0, friction = 0, masse = 0;
     protected int id;
     protected ArrayList<Balle> autres = new ArrayList<>();
     protected ImagePattern pattern;
+    protected double angle = 0;
 
     private int width = 800, height = 500;
-    protected double energie=(500-y);
-
-    // .5mv^2+mgy
 
     public void collision() {
         for (int i = id + 1; i < autres.size(); i++) {
@@ -29,25 +27,31 @@ public class Balle extends Objet{
                         targetY = (y + Math.sin(angle) * minDist),
                         ax = ((targetX - autres.get(i).x) * spring),
                         ay = ((targetY - autres.get(i).y) * spring);
-                {
-                vx -= ax;
-                vy -= ay;
-                energie-=((int)ax^2)*masse;
-                energie-=(int)ay^2;
-                autres.get(i).vx += ax;
-                autres.get(i).vy += ay;
-                autres.get(i).energie+=ax;
-                autres.get(i).energie+=ay;}
 
+                if (autres.get(i).masse >= masse) {
+                    vx -= ax;
+                    vy -= ay;
+                    autres.get(i).vx += ax * (masse / autres.get(i).masse);
+                    autres.get(i).vy += ay * (masse / autres.get(i).masse);
+                } else if (autres.get(i).masse <= masse) {
+                    vx -= ax * (autres.get(i).masse / masse);
+                    vy -= ay * (autres.get(i).masse / masse);
+                    autres.get(i).vx += ax;
+                    autres.get(i).vy += ay;
+                }
             }
         }
     }
 
     public void mouvement() {
-        {
         vy += gravite;
         x += vx;
         y += vy;
+
+        if (vx > 0)
+            vx -= 0.001;
+        else if (vx < 0)
+            vx += 0.001;
 
         if (x + diametre > width) {
             x = width - diametre;
@@ -69,12 +73,13 @@ public class Balle extends Objet{
             vy *= friction;
 
         }
-        }
     }
 
     public Ellipse affichage() {
         Ellipse retour = new Ellipse(x, y, diametre, diametre);
         retour.setFill(pattern);
+        angle += vx;
+        retour.setRotate(angle);
         retour.autosize();
         return retour;
     }

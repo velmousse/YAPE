@@ -15,7 +15,8 @@ public class Tennis extends Balle {
         autres = _a;
         diametre = 15;
         friction = -0.9;
-        masse=.5;
+        spring = 0.7;
+        masse = 1;
         pattern = new ImagePattern(image);
     }
 }
