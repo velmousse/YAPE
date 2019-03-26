@@ -11,6 +11,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -30,7 +31,7 @@ public class Main extends Application {
     private Image bowling = new Image("file:ressources/bowling.png");
     private Image tennis = new Image("file:ressources/tennis.png");
     private Scene scene;
-    private Group group;
+    private Group group, objets, uinterface;
     private final Boolean[] selection = new Boolean[3];
     private int numBalles = 0, numPlanInclines = 0, numObjets = 0;
 
@@ -43,8 +44,12 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         for (int i = 0; i < selection.length; i++) selection[i] = false;
         group = new Group();
+        objets = new Group();
+        uinterface = new Group();
+        group.getChildren().addAll(objets, uinterface); //Ordre prédéfini nécessaire
+
         primaryStage.setTitle("");
-        scene = new Scene(group, 800, 500);
+        scene = new Scene(group, 1200, 800);
 
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.R)
@@ -66,22 +71,28 @@ public class Main extends Application {
         scene.setOnMouseClicked(event -> {  //Ne pas oublier de vérifier s'il y a un imbriquement
             if (selection[0]) {
                 balles.add(new Bowling((float) event.getX(), (float) event.getY(), balles.size(), balles, bowling));
-                group.getChildren().add(balles.get(numBalles).affichage());
+                objets.getChildren().add(balles.get(numBalles).affichage());
                 numBalles++;
                 numObjets++;
             } else if (selection[1]) {
                 balles.add(new Tennis((float) event.getX(), (float) event.getY(), balles.size(), balles, tennis));
-                group.getChildren().add(balles.get(numBalles).affichage());
+                objets.getChildren().add(balles.get(numBalles).affichage());
                 numBalles++;
                 numObjets++;
             } else if(selection[2]){
                 planInclines.add(new PlanIncline((float) event.getX(),(float) event.getY(), null));
-                group.getChildren().add(planInclines.get(numPlanInclines).affichage());
+                objets.getChildren().add(planInclines.get(numPlanInclines).affichage());
                 numPlanInclines++;
                 numObjets++;
             }
         });
 
+        Rectangle menuDroit = new Rectangle(300, 900, Color.LIGHTGRAY);
+        menuDroit.setX(1000);
+        menuDroit.setY(0);
+        uinterface.getChildren().add(menuDroit);
+
+        primaryStage.setResizable(false);
         primaryStage.setScene(scene);
 
 
@@ -92,15 +103,16 @@ public class Main extends Application {
                         int nombreDeBalles = 0;
                         int nombreDePlansInclines = 0;
                         for (int i = 0; i < numObjets; i++) {
-                            Object objet = group.getChildren().get(i);
+                            Object objet = objets.getChildren().get(i);
                             if (objet instanceof Ellipse) {
                                 balles.get(nombreDeBalles).mouvement();
                                 balles.get(nombreDeBalles).collision();
-                                group.getChildren().set(i, balles.get(nombreDeBalles++).affichage());
+                                objets.getChildren().set(i, balles.get(nombreDeBalles++).affichage());
                             }
+                            /*
                             else if (objet instanceof Rectangle) {
                                 group.getChildren().set(i, planInclines.get(nombreDePlansInclines++).affichage());
-                            }
+                            }*/
                         }
                     }
                 }
@@ -114,7 +126,7 @@ public class Main extends Application {
         timeline.stop();
         balles.clear();
         planInclines.clear();
-        group.getChildren().clear();
+        objets.getChildren().clear();
         numBalles = 0;
         numPlanInclines = 0;
         numObjets = 0;

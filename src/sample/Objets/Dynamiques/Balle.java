@@ -13,7 +13,7 @@ public class Balle extends Objet{
     protected ImagePattern pattern;
     protected double angle = 0;
 
-    private int width = 800, height = 500;
+    private int width = 1000, height = 810;
 
     public void collision() {
         for (int i = id + 1; i < autres.size(); i++) {
