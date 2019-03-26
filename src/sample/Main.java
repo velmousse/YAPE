@@ -9,9 +9,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -23,6 +26,7 @@ import sample.Objets.Fixes.ObjetFixe;
 import sample.Objets.Fixes.PlanIncline;
 import sample.Objets.Dynamiques.Tennis;
 import sample.Objets.Objet;
+import sun.plugin2.util.ColorUtil;
 
 import java.util.ArrayList;
 
@@ -33,6 +37,7 @@ public class Main extends Application {
     private Scene scene;
     private Group group, objets, uinterface;
     private final Boolean[] selection = new Boolean[3];
+    private boolean pause = true;
     private int numBalles = 0, numPlanInclines = 0, numObjets = 0;
 
     private ArrayList<Balle> balles = new ArrayList<>();
@@ -51,46 +56,29 @@ public class Main extends Application {
         primaryStage.setTitle("");
         scene = new Scene(group, 1200, 800);
 
-        scene.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.R)
-                resetScene();
-            else if (event.getCode() == KeyCode.SPACE)
-               timeline.play();
-            else if (event.getCode() == KeyCode.DIGIT1) {
-                for (int i = 0; i < selection.length; i++) selection[i] = false;
-                selection[0] = true;
-            } else if (event.getCode() == KeyCode.DIGIT2) {
-                for (int i = 0; i < selection.length; i++) selection[i] = false;
-                selection[1] = true;
-            } else if (event.getCode() == KeyCode.DIGIT3) {
-                for (int i = 0; i < selection.length; i++) selection[i] = false;
-                selection[2] = true;
-            }
-        });
 
         scene.setOnMouseClicked(event -> {  //Ne pas oublier de vérifier s'il y a un imbriquement
-            if (selection[0]) {
-                balles.add(new Bowling((float) event.getX(), (float) event.getY(), balles.size(), balles, bowling));
-                objets.getChildren().add(balles.get(numBalles).affichage());
-                numBalles++;
-                numObjets++;
-            } else if (selection[1]) {
-                balles.add(new Tennis((float) event.getX(), (float) event.getY(), balles.size(), balles, tennis));
-                objets.getChildren().add(balles.get(numBalles).affichage());
-                numBalles++;
-                numObjets++;
-            } else if(selection[2]){
-                planInclines.add(new PlanIncline((float) event.getX(),(float) event.getY(), null));
-                objets.getChildren().add(planInclines.get(numPlanInclines).affichage());
-                numPlanInclines++;
-                numObjets++;
+            if ((event.getX() > 0 && event.getX() < 1000) && pause) {
+                if (selection[0]) {
+                    balles.add(new Bowling((float) event.getX(), (float) event.getY(), balles.size(), balles, bowling));
+                    objets.getChildren().add(balles.get(numBalles).affichage());
+                    numBalles++;
+                    numObjets++;
+                } else if (selection[1]) {
+                    balles.add(new Tennis((float) event.getX(), (float) event.getY(), balles.size(), balles, tennis));
+                    objets.getChildren().add(balles.get(numBalles).affichage());
+                    numBalles++;
+                    numObjets++;
+                } else if (selection[2]) {
+                    planInclines.add(new PlanIncline((float) event.getX(), (float) event.getY(), null));
+                    objets.getChildren().add(planInclines.get(numPlanInclines).affichage());
+                    numPlanInclines++;
+                    numObjets++;
+                }
             }
         });
 
-        Rectangle menuDroit = new Rectangle(300, 900, Color.LIGHTGRAY);
-        menuDroit.setX(1000);
-        menuDroit.setY(0);
-        uinterface.getChildren().add(menuDroit);
+        setInterface();
 
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
@@ -122,6 +110,72 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+    public void setInterface() {
+        Rectangle menuDroit = new Rectangle(300, 900, Color.LIGHTGRAY);
+        menuDroit.setX(1000);
+        menuDroit.setY(0);
+
+        Button restart = new Button("Restart");
+        restart.setTranslateX(1135);
+        restart.setTranslateY(770);
+        restart.setScaleX(1.5);
+        restart.setScaleY(1.5);
+        restart.setOnAction(event -> { resetScene(); });
+
+        Button start = new Button("Start");
+        start.setTranslateX(1025);
+        start.setTranslateY(770);
+        start.setScaleX(1.5);
+        start.setScaleY(1.5);
+        start.setOnAction(event -> {
+            timeline.play();
+            pause = false;
+        });
+
+        Group selections = setSelections();
+
+        uinterface.getChildren().addAll(menuDroit, restart, start, selections);
+    }
+
+    public Group setSelections() {
+        Group retour = new Group();
+
+        Rectangle boutonBowling = new Rectangle(80, 80);
+        boutonBowling.setFill(new ImagePattern(bowling));
+        boutonBowling.setStroke(Color.BLACK);
+        boutonBowling.setX(1015);
+        boutonBowling.setY(10);
+
+        Rectangle boutonTennis = new Rectangle(80, 80);
+        boutonTennis.setFill(new ImagePattern(tennis));
+        boutonTennis.setStroke(Color.BLACK);
+        boutonTennis.setX(1115);
+        boutonTennis.setY(10);
+
+        retour.getChildren().addAll(boutonBowling, boutonTennis);
+
+        boutonBowling.setOnMouseClicked(event -> {
+            for (int i = 0; i < 2; i++) {
+                Rectangle selection = (Rectangle) retour.getChildren().get(i);
+                selection.setStroke(Color.BLACK);
+            }
+            boutonBowling.setStroke(Color.GREEN);
+            for (int i = 0; i < selection.length; i++) selection[i] = false;
+            selection[0] = true;
+        });
+
+        boutonTennis.setOnMouseClicked(event -> {
+            for (int i = 0; i < 2; i++) {
+                Rectangle selection = (Rectangle) retour.getChildren().get(i);
+                selection.setStroke(Color.BLACK);
+            }
+            boutonTennis.setStroke(Color.GREEN);
+            for (int i = 0; i < selection.length; i++) selection[i] = false;
+            selection[1] = true;
+        });
+        return retour;
+    }
+
     public void resetScene() {
         timeline.stop();
         balles.clear();
@@ -130,5 +184,6 @@ public class Main extends Application {
         numBalles = 0;
         numPlanInclines = 0;
         numObjets = 0;
+        pause = true;
     }
 }
