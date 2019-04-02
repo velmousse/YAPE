@@ -1,8 +1,14 @@
 package sample.Objets.Dynamiques;
 
+
+import javafx.geometry.Bounds;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Ellipse;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
 import sample.Objets.Objet;
+import sample.Objets.Fixes.*;
 
 import java.util.ArrayList;
 
@@ -14,6 +20,21 @@ public class Balle extends Objet{
     protected double angle = 0;
 
     private int width = 1000, height = 810;
+    protected double energie = (500 - y);
+    private int width = 800, height = 500;
+    boolean collision= false;
+    Bounds bounds=this.affichage().getBoundsInLocal();
+
+
+    public ArrayList<ObjetFixe> getObjetsfixes() {
+        return objetsfixes;
+    }
+
+    public void setObjetsfixes(ArrayList<ObjetFixe> objetsfixes) {
+        this.objetsfixes = objetsfixes;
+    }
+
+    // .5mv^2+mgy
 
     public void collision() {
         for (int i = id + 1; i < autres.size(); i++) {
@@ -41,7 +62,47 @@ public class Balle extends Objet{
                 }
             }
         }
+
     }
+
+    public void collisionObjet(ObjetFixe objetFixe) {
+
+        if (objetFixe.getP() != 0) {
+            double minheight = objetFixe.getY();
+            double maxheight = objetFixe.getR();
+            double mindepth = objetFixe.getX();
+            double maxdepth = objetFixe.getK();
+            Rectangle rect= new Rectangle(mindepth,minheight,maxdepth,maxheight);
+            Bounds bounds1=rect.getBoundsInLocal();
+
+
+            if(bounds.intersects(bounds1)){
+               collision=true;}
+
+            if(collision){
+            if (x + diametre > mindepth) {
+                x = mindepth - diametre;
+                vx *= friction;
+            }else if (x - diametre < maxdepth) {
+                x = diametre + maxdepth;
+                vx *= friction;
+
+            }
+            if (y + diametre > minheight) {
+                y = minheight - diametre;
+                vy *= friction;
+
+
+            } else if (y - diametre < maxheight) {
+                y = diametre + maxheight;
+                vy *= friction;
+
+            }
+            }
+
+        }
+    }
+
 
     public void mouvement() {
         vy += gravite;

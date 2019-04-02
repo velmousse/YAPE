@@ -16,6 +16,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Ellipse;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -23,6 +24,7 @@ import org.w3c.dom.css.Rect;
 import sample.Objets.Dynamiques.Balle;
 import sample.Objets.Dynamiques.Bowling;
 import sample.Objets.Fixes.ObjetFixe;
+import sample.Objets.Fixes.PlanDroit;
 import sample.Objets.Fixes.PlanIncline;
 import sample.Objets.Dynamiques.Tennis;
 import sample.Objets.Objet;
@@ -31,17 +33,17 @@ import sun.plugin2.util.ColorUtil;
 import java.util.ArrayList;
 
 public class Main extends Application {
+    private final Boolean[] selection = new Boolean[4];
+    public ArrayList<PlanIncline> planInclines = new ArrayList<>();
+    public ArrayList<PlanDroit> planDroits = new ArrayList<>();
     private Timeline timeline;
     private Image bowling = new Image("file:ressources/bowling.png");
     private Image tennis = new Image("file:ressources/tennis.png");
     private Scene scene;
     private Group group, objets, uinterface;
-    private final Boolean[] selection = new Boolean[3];
     private boolean pause = true;
-    private int numBalles = 0, numPlanInclines = 0, numObjets = 0;
-
+    private int numBalles = 0, numPlanInclines = 0, numObjets = 0, numPlanDroits = 0;
     private ArrayList<Balle> balles = new ArrayList<>();
-    private ArrayList<PlanIncline> planInclines = new ArrayList<>();
 
     public static void main(String[] args) { launch(args); }
 
@@ -69,11 +71,16 @@ public class Main extends Application {
                     objets.getChildren().add(balles.get(numBalles).affichage());
                     numBalles++;
                     numObjets++;
-                } else if (selection[2]) {
+                } else if (selection[2]) { /*
                     planInclines.add(new PlanIncline((float) event.getX(), (float) event.getY(), null));
                     objets.getChildren().add(planInclines.get(numPlanInclines).affichage());
                     numPlanInclines++;
-                    numObjets++;
+                    numObjets++; */
+                } else if (selection[3]) { /*
+                    planDroits.add(new PlanDroit((float) event.getX() - 30, (float) event.getY() - 20, (float) event.getX() + 30, (float) event.getY() - 20, (float) event.getX() + 30, (float) event.getY() + 20, (float) event.getX() - 30, (float) event.getY() + 20));
+                    objets.getChildren().add(planDroits.get(numPlanDroits).affichage());
+                    numPlanDroits++;
+                    numObjets++; */
                 }
             }
         });
@@ -152,10 +159,23 @@ public class Main extends Application {
         boutonTennis.setX(1115);
         boutonTennis.setY(10);
 
-        retour.getChildren().addAll(boutonBowling, boutonTennis);
+        Rectangle boutonPlanIncline = new Rectangle(80, 80);
+        boutonPlanIncline.setFill(Color.ORANGE);
+        boutonPlanIncline.setStroke(Color.BLACK);
+        boutonPlanIncline.setX(1015);
+        boutonPlanIncline.setY(110);
 
+        Rectangle boutonPlanDroit = new Rectangle(80, 80);
+        boutonPlanDroit.setFill(Color.RED);
+        boutonPlanDroit.setStroke(Color.BLACK);
+        boutonPlanDroit.setX(1115);
+        boutonPlanDroit.setY(110);
+
+        retour.getChildren().addAll(boutonBowling, boutonTennis, boutonPlanIncline, boutonPlanDroit);
+
+        int nbOptions = 4;
         boutonBowling.setOnMouseClicked(event -> {
-            for (int i = 0; i < 2; i++) {
+            for (int i = 0; i < nbOptions; i++) {
                 Rectangle selection = (Rectangle) retour.getChildren().get(i);
                 selection.setStroke(Color.BLACK);
             }
@@ -165,7 +185,7 @@ public class Main extends Application {
         });
 
         boutonTennis.setOnMouseClicked(event -> {
-            for (int i = 0; i < 2; i++) {
+            for (int i = 0; i < nbOptions; i++) {
                 Rectangle selection = (Rectangle) retour.getChildren().get(i);
                 selection.setStroke(Color.BLACK);
             }
@@ -173,6 +193,27 @@ public class Main extends Application {
             for (int i = 0; i < selection.length; i++) selection[i] = false;
             selection[1] = true;
         });
+
+        boutonPlanIncline.setOnMouseClicked(event -> {
+            for (int i = 0; i < nbOptions; i++) {
+                Rectangle selection = (Rectangle) retour.getChildren().get(i);
+                selection.setStroke(Color.BLACK);
+            }
+            boutonPlanIncline.setStroke(Color.GREEN);
+            for (int i = 0; i < selection.length; i++) selection[i] = false;
+            selection[2] = true;
+        });
+
+        boutonPlanDroit.setOnMouseClicked(event -> {
+            for (int i = 0; i < nbOptions; i++) {
+                Rectangle selection = (Rectangle) retour.getChildren().get(i);
+                selection.setStroke(Color.BLACK);
+            }
+            boutonPlanDroit.setStroke(Color.GREEN);
+            for (int i = 0; i < selection.length; i++) selection[i] = false;
+            selection[3] = true;
+        });
+
         return retour;
     }
 
@@ -180,9 +221,11 @@ public class Main extends Application {
         timeline.stop();
         balles.clear();
         planInclines.clear();
+        planDroits.clear();
         objets.getChildren().clear();
         numBalles = 0;
         numPlanInclines = 0;
+        numPlanDroits = 0;
         numObjets = 0;
         pause = true;
     }
