@@ -1,19 +1,38 @@
 package sample.Objets.Dynamiques;
 
+
+import javafx.geometry.Bounds;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Ellipse;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
 import sample.Objets.Objet;
+import sample.Objets.Fixes.*;
 
 import java.util.ArrayList;
 
-public class Balle extends Objet{
-    protected double x, y, diametre, vx = 0, vy = 0, gravite = 0.09, spring = 0.7, friction,masse;
-    protected int id;
-    protected ArrayList<Balle> autres = new ArrayList<>();
-    protected ImagePattern pattern;
+import sample.Main;
 
+public class Balle extends Objet {
+    public ArrayList<Balle> autres = new ArrayList<>();
+    public ArrayList<ObjetFixe> objetsfixes = new ArrayList<>();
+    protected double x, y, diametre, vx = 0, vy = 0, gravite = 0.09, spring = 0.7, friction, masse;
+    protected int id;
+    protected ImagePattern pattern;
+    protected double energie = (500 - y);
     private int width = 800, height = 500;
-    protected double energie=(500-y);
+    boolean collision= false;
+    Bounds bounds=this.affichage().getBoundsInLocal();
+
+
+    public ArrayList<ObjetFixe> getObjetsfixes() {
+        return objetsfixes;
+    }
+
+    public void setObjetsfixes(ArrayList<ObjetFixe> objetsfixes) {
+        this.objetsfixes = objetsfixes;
+    }
 
     // .5mv^2+mgy
 
@@ -30,45 +49,86 @@ public class Balle extends Objet{
                         ax = ((targetX - autres.get(i).x) * spring),
                         ay = ((targetY - autres.get(i).y) * spring);
                 {
-                vx -= ax;
-                vy -= ay;
-                energie-=((int)ax^2)*masse;
-                energie-=(int)ay^2;
-                autres.get(i).vx += ax;
-                autres.get(i).vy += ay;
-                autres.get(i).energie+=ax;
-                autres.get(i).energie+=ay;}
+                    vx -= ax;
+                    vy -= ay;
+                    energie -= ((int) ax ^ 2) * masse;
+                    energie -= (int) ay ^ 2;
+                    autres.get(i).vx += ax;
+                    autres.get(i).vy += ay;
+                    autres.get(i).energie += ax;
+                    autres.get(i).energie += ay;
+                }
 
             }
         }
+
     }
+
+    public void collisionObjet(ObjetFixe objetFixe) {
+
+        if (objetFixe.getP() != 0) {
+            double minheight = objetFixe.getY();
+            double maxheight = objetFixe.getR();
+            double mindepth = objetFixe.getX();
+            double maxdepth = objetFixe.getK();
+            Rectangle rect= new Rectangle(mindepth,minheight,maxdepth,maxheight);
+            Bounds bounds1=rect.getBoundsInLocal();
+
+
+            if(bounds.intersects(bounds1)){
+               collision=true;}
+
+            if(collision){
+            if (x + diametre > mindepth) {
+                x = mindepth - diametre;
+                vx *= friction;
+            }else if (x - diametre < maxdepth) {
+                x = diametre + maxdepth;
+                vx *= friction;
+
+            }
+            if (y + diametre > minheight) {
+                y = minheight - diametre;
+                vy *= friction;
+
+
+            } else if (y - diametre < maxheight) {
+                y = diametre + maxheight;
+                vy *= friction;
+
+            }
+            }
+
+        }
+    }
+
 
     public void mouvement() {
         {
-        vy += gravite;
-        x += vx;
-        y += vy;
+            vy += gravite;
+            x += vx;
+            y += vy;
 
-        if (x + diametre > width) {
-            x = width - diametre;
-            vx *= friction;
-
-
-        } else if (x - diametre < 0) {
-            x = diametre;
-            vx *= friction;
-
-        }
-        if (y + diametre > height) {
-            y = height - diametre;
-            vy *= friction;
+            if (x + diametre > width) {
+                x = width - diametre;
+                vx *= friction;
 
 
-        } else if (y - diametre < 0) {
-            y = diametre;
-            vy *= friction;
+            } else if (x - diametre < 0) {
+                x = diametre;
+                vx *= friction;
 
-        }
+            }
+            if (y + diametre > height) {
+                y = height - diametre;
+                vy *= friction;
+
+
+            } else if (y - diametre < 0) {
+                y = diametre;
+                vy *= friction;
+
+            }
         }
     }
 

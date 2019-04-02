@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Ellipse;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -19,6 +20,7 @@ import org.w3c.dom.css.Rect;
 import sample.Objets.Dynamiques.Balle;
 import sample.Objets.Dynamiques.Bowling;
 import sample.Objets.Fixes.ObjetFixe;
+import sample.Objets.Fixes.PlanDroit;
 import sample.Objets.Fixes.PlanIncline;
 import sample.Objets.Dynamiques.Tennis;
 import sample.Objets.Objet;
@@ -26,21 +28,23 @@ import sample.Objets.Objet;
 import java.util.ArrayList;
 
 public class Main extends Application {
+    private final Boolean[] selection = new Boolean[4];
+    public ArrayList<PlanIncline> planInclines = new ArrayList<>();
+    public ArrayList<PlanDroit> planDroits = new ArrayList<>();
     private Timeline timeline;
     private Image bowling = new Image("file:ressources/bowling.png");
     private Image tennis = new Image("file:ressources/tennis.png");
     private Scene scene;
     private Group group;
-    private final Boolean[] selection = new Boolean[3];
-    private int numBalles = 0, numPlanInclines = 0, numObjets = 0;
-
+    private int numBalles = 0, numPlanInclines = 0, numObjets = 0, numPlanDroits = 0;
     private ArrayList<Balle> balles = new ArrayList<>();
-    private ArrayList<PlanIncline> planInclines = new ArrayList<>();
 
-    public static void main(String[] args) { launch(args); }
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         for (int i = 0; i < selection.length; i++) selection[i] = false;
         group = new Group();
         primaryStage.setTitle("");
@@ -50,7 +54,7 @@ public class Main extends Application {
             if (event.getCode() == KeyCode.R)
                 resetScene();
             else if (event.getCode() == KeyCode.SPACE)
-               timeline.play();
+                timeline.play();
             else if (event.getCode() == KeyCode.DIGIT1) {
                 for (int i = 0; i < selection.length; i++) selection[i] = false;
                 selection[0] = true;
@@ -60,6 +64,10 @@ public class Main extends Application {
             } else if (event.getCode() == KeyCode.DIGIT3) {
                 for (int i = 0; i < selection.length; i++) selection[i] = false;
                 selection[2] = true;
+            } else if (event.getCode() == KeyCode.DIGIT4) {
+                for (int i = 0; i < selection.length; i++) selection[i] = false;
+                selection[3] = true;
+
             }
         });
 
@@ -74,37 +82,65 @@ public class Main extends Application {
                 group.getChildren().add(balles.get(numBalles).affichage());
                 numBalles++;
                 numObjets++;
-            } else if(selection[2]){
-                planInclines.add(new PlanIncline((float) event.getX(),(float) event.getY()));
+            } else if (selection[2]) {
+                planInclines.add(new PlanIncline((float) event.getX(), (float) event.getY() - 40, (float) event.getX() + 40, (float) event.getY(), (float) event.getX(), (float) event.getY()));
                 group.getChildren().add(planInclines.get(numPlanInclines).affichage());
                 numPlanInclines++;
                 numObjets++;
+
+            } else if (selection[3]) {
+                planDroits.add(new PlanDroit((float) event.getX() - 30, (float) event.getY() - 20, (float) event.getX() + 30, (float) event.getY() - 20, (float) event.getX() + 30, (float) event.getY() + 20, (float) event.getX() - 30, (float) event.getY() + 20));
+                group.getChildren().add(planDroits.get(numPlanDroits).affichage());
+                numPlanDroits++;
+                numObjets++;
+
+
             }
         });
+
 
         primaryStage.setScene(scene);
 
 
         timeline = new Timeline(new KeyFrame(Duration.seconds(0), new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    if (numObjets > 0) {
-                        int nombreDeBalles = 0;
-                        int nombreDePlansInclines = 0;
-                        for (int i = 0; i < numObjets; i++) {
-                            Object objet = group.getChildren().get(i);
-                            if (objet instanceof Ellipse) {
-                                balles.get(nombreDeBalles).mouvement();
-                                balles.get(nombreDeBalles).collision();
-                                group.getChildren().set(i, balles.get(nombreDeBalles++).affichage());
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if (numObjets > 0) {
+
+                    int nombreDeBalles = 0;
+                    int nombreDePlansInclines = 0;
+                    int nombreDePlansDroits = 0;
+                    for (Balle balle : balles) {
+                        for (int i = 0; i < planDroits.size(); i++) {
+                            balle.getObjetsfixes().add(planDroits.get(i));
+                        }
+                        for (int i = 0; i < planInclines.size(); i++) {
+                            balle.getObjetsfixes().add(planInclines.get(i));
+                        }
+                    }
+
+
+                    for (int i = 0; i < numObjets; i++) {
+                        Object objet = group.getChildren().get(i);
+                        if (objet instanceof Ellipse) {
+                            balles.get(nombreDeBalles).mouvement();
+                            balles.get(nombreDeBalles).collision();
+                            if (numPlanDroits > 0 || numPlanInclines >0) {
+                                balles.get(nombreDeBalles).collisionObjet(balles.get(nombreDeBalles).getObjetsfixes().get(nombreDePlansDroits + nombreDePlansInclines));
                             }
-                            else if (objet instanceof Rectangle) {
+                            group.getChildren().set(i, balles.get(nombreDeBalles++).affichage());
+                        }
+
+                        if (objet instanceof Polygon) {
+                            if (((Polygon) objet).getPoints().size() == 6)
                                 group.getChildren().set(i, planInclines.get(nombreDePlansInclines++).affichage());
-                            }
+                            if (((Polygon) objet).getPoints().size() == 8)
+                                group.getChildren().set(i, planDroits.get(nombreDePlansDroits++).affichage());
                         }
                     }
                 }
             }
+        }
         ), new KeyFrame(Duration.millis(10)));
         timeline.setCycleCount(Animation.INDEFINITE);
         primaryStage.show();
@@ -114,9 +150,11 @@ public class Main extends Application {
         timeline.stop();
         balles.clear();
         planInclines.clear();
+        planDroits.clear();
         group.getChildren().clear();
         numBalles = 0;
         numPlanInclines = 0;
+        numPlanDroits = 0;
         numObjets = 0;
     }
 }
