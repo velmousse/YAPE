@@ -11,27 +11,27 @@ import sample.Objets.Objet;
 import sample.Objets.Fixes.*;
 
 import java.util.ArrayList;
+import sample.Objets.Fixes.ObjetFixe;
 
 public class Balle extends Objet{
     protected double x, y, diametre, vx = 0, vy = 0, gravite = 0.09, spring = 0, friction = 0, masse = 0;
     protected int id;
     protected ArrayList<Balle> autres = new ArrayList<>();
+    protected ArrayList<ObjetFixe> objetsFixes = new ArrayList<>();
     protected ImagePattern pattern;
     protected double angle = 0;
 
     private int width = 1000, height = 810;
-    protected double energie = (500 - y);
-    private int width = 800, height = 500;
     boolean collision= false;
     Bounds bounds=this.affichage().getBoundsInLocal();
 
 
     public ArrayList<ObjetFixe> getObjetsfixes() {
-        return objetsfixes;
+        return objetsFixes;
     }
 
     public void setObjetsfixes(ArrayList<ObjetFixe> objetsfixes) {
-        this.objetsfixes = objetsfixes;
+        this.objetsFixes = objetsfixes;
     }
 
     // .5mv^2+mgy
