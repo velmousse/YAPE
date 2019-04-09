@@ -54,6 +54,9 @@ public class Main extends Application {
         objets = new Group();
         uinterface = new Group();
         group.getChildren().addAll(objets, uinterface); //Ordre prédéfini nécessaire
+        Group root= new Group();
+
+        Scene ecrandemarrage=new Scene(root,600,400);
 
         primaryStage.setTitle("");
         scene = new Scene(group, 1200, 800);
@@ -93,10 +96,31 @@ public class Main extends Application {
             }
         });
 
+
+
+        Button newGame= new Button("Nouvelle Partie");
+        newGame.setPrefHeight(50);
+        newGame.setPrefWidth(100);
+        newGame.setTranslateX(30);
+        newGame.setTranslateY(250);
+        newGame.setOnAction(event -> primaryStage.setScene(scene));
+
+        Button quitter= new Button("Quitter");
+        quitter.setPrefHeight(50);
+        quitter.setPrefWidth(100);
+        quitter.setTranslateY(250);
+        quitter.setTranslateX(370);
+        quitter.setOnAction(event -> primaryStage.close());
+
+        Button charger= new Button("Charger un niveau");
+
+
+        root.getChildren().addAll(quitter,newGame);
+
         setInterface();
 
         primaryStage.setResizable(false);
-        primaryStage.setScene(scene);
+        primaryStage.setScene(ecrandemarrage);
 
 
         timeline = new Timeline(new KeyFrame(Duration.seconds(0), new EventHandler<ActionEvent>() {
@@ -111,9 +135,12 @@ public class Main extends Application {
                             if (objet instanceof Ellipse) {
                                 balles.get(nombreDeBalles).mouvement();
                                 balles.get(nombreDeBalles).collision();
+                                for(int j=0;j<balles.get(nombreDeBalles).getObjetsfixes().size();j++)
+                                balles.get(nombreDeBalles).collisionObjet(balles.get(nombreDeBalles).getObjetsfixes().get(j));
                                 objets.getChildren().set(i, balles.get(nombreDeBalles++).affichage());
                             }
-                            else if (objet instanceof Polygon) {
+                            if (objet instanceof Polygon) {
+
                                 if(((Polygon) objet).getPoints().size()==6)
                                 objets.getChildren().set(i, planInclines.get(nombreDePlansInclines++).affichage());
                                 if(((Polygon) objet).getPoints().size()==8)

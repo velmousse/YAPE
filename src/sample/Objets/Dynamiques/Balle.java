@@ -4,16 +4,15 @@ package sample.Objets.Dynamiques;
 import javafx.geometry.Bounds;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Ellipse;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.*;
 import sample.Objets.Objet;
 import sample.Objets.Fixes.*;
 
 import java.util.ArrayList;
+
 import sample.Objets.Fixes.ObjetFixe;
 
-public class Balle extends Objet{
+public class Balle extends Objet {
     protected double x, y, diametre, vx = 0, vy = 0, gravite = 0.09, spring = 0, friction = 0, masse = 0;
     protected int id;
     protected ArrayList<Balle> autres = new ArrayList<>();
@@ -22,8 +21,8 @@ public class Balle extends Objet{
     protected double angle = 0;
 
     private int width = 1000, height = 810;
-    boolean collision= false;
-    Bounds bounds=this.affichage().getBoundsInLocal();
+    boolean collision = false;
+    Bounds bounds = this.affichage().getBoundsInLocal();
 
 
     public ArrayList<ObjetFixe> getObjetsfixes() {
@@ -72,33 +71,26 @@ public class Balle extends Objet{
             double maxheight = objetFixe.getR();
             double mindepth = objetFixe.getX();
             double maxdepth = objetFixe.getK();
-            Rectangle rect= new Rectangle(mindepth,minheight,maxdepth,maxheight);
-            Bounds bounds1=rect.getBoundsInLocal();
+            Rectangle rect = new Rectangle(mindepth, minheight, maxdepth, maxheight);
+
+            Ellipse ellipse = new Ellipse(this.x, this.y, diametre, diametre);
 
 
-            if(bounds.intersects(bounds1)){
-               collision=true;}
+            Shape intersect = Shape.intersect(ellipse, rect);
+            if (intersect.getBoundsInLocal().getWidth() != -1||intersect.getBoundsInLocal().getHeight()!=-1) {
 
-            if(collision){
-            if (x + diametre > mindepth) {
-                x = mindepth - diametre;
-                vx *= friction;
-            }else if (x - diametre < maxdepth) {
-                x = diametre + maxdepth;
-                vx *= friction;
+                double dx = ((rect.getX() + rect.getWidth()) / 2) - x;
+                double dy = ((rect.getY() + rect.getHeight()) / 2) - y;
 
+                double angle = Math.atan2(dy, dx),
+                        targetX = (x + (Math.cos(angle))),
+                        targetY = (y + (Math.sin(angle))),
+                        ax = (targetX - x) * 0.05,
+                        ay = (targetY - y) * 0.5;
+                vx -= ax;
+                vy -= ay;
             }
-            if (y + diametre > minheight) {
-                y = minheight - diametre;
-                vy *= friction;
 
-
-            } else if (y - diametre < maxheight) {
-                y = diametre + maxheight;
-                vy *= friction;
-
-            }
-            }
 
         }
     }
