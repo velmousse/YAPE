@@ -13,29 +13,12 @@ import java.util.ArrayList;
 import sample.Objets.Fixes.ObjetFixe;
 
 public class Balle extends Objet {
-    protected double x, y, diametre, vx = 0, vy = 0, gravite = 0.09, spring = 0, friction = 0, masse = 0;
-    protected int id;
-    protected ArrayList<Balle> autres = new ArrayList<>();
-    protected ArrayList<ObjetFixe> objetsFixes = new ArrayList<>();
+    protected double diametre, vx = 0, vy = 0, gravite = 0.09, spring = 0, masse = 0;
     protected ImagePattern pattern;
     protected double angle = 0;
-
     private int width = 1000, height = 810;
-    boolean collision = false;
-    Bounds bounds = this.affichage().getBoundsInLocal();
 
-
-    public ArrayList<ObjetFixe> getObjetsfixes() {
-        return objetsFixes;
-    }
-
-    public void setObjetsfixes(ArrayList<ObjetFixe> objetsfixes) {
-        this.objetsFixes = objetsfixes;
-    }
-
-    // .5mv^2+mgy
-
-    public void collision() {
+    public void collision() { //Vérifier la collision ici avec les deux types d'objet en même temps
         for (int i = id + 1; i < autres.size(); i++) {
             double dx = autres.get(i).x - x;
             double dy = autres.get(i).y - y;
@@ -61,9 +44,10 @@ public class Balle extends Objet {
                 }
             }
         }
-
     }
 
+    //Ne pas utiliser
+    /*
     public void collisionObjet(ObjetFixe objetFixe) {
 
         if (objetFixe.getP() != 0) {
@@ -90,11 +74,9 @@ public class Balle extends Objet {
                 vx -= ax;
                 vy -= ay;
             }
-
-
         }
     }
-
+    */
 
     public void mouvement() {
         vy += gravite;

@@ -1,6 +1,7 @@
 package sample.Objets.Fixes;
 
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import sample.Objets.Dynamiques.Balle;
@@ -9,75 +10,27 @@ import sample.Objets.Objet;
 import java.util.ArrayList;
 
 public class ObjetFixe extends Objet{
-    public float getX() {
-        return x;
+    protected int type; //0 PlanIncline, 1 PlanDroit
+    protected double spring;
+    protected ImagePattern image; //À voir plus tard
+
+    public void collision() {
+        for (int i = id + 1; i < autres.size(); i++) {
+
+        }
     }
 
-    public void setX(float x) {
-        this.x = x;
+    public Polygon affichage() {
+        Polygon retour = null;
+        switch (type) {
+            case 0:
+
+                break;
+            case 1:
+                retour = new Polygon(x - 20, y + 10, x + 20, y - 10);
+                retour.setFill(Color.BLACK);
+                break;
+        }
+        return retour;
     }
-
-    public float getY() {
-        return y;
-    }
-
-    public void setY(float y) {
-        this.y = y;
-    }
-
-    public float getZ() {
-        return z;
-    }
-
-    public void setZ(float z) {
-        this.z = z;
-    }
-
-    public float getQ() {
-        return q;
-    }
-
-    public void setQ(float q) {
-        this.q = q;
-    }
-
-    public float getK() {
-        return k;
-    }
-
-    public void setK(float k) {
-        this.k = k;
-    }
-
-    public float getR() {
-        return r;
-    }
-
-    public void setR(float r) {
-        this.r = r;
-    }
-
-    public float getP() {
-        return p;
-    }
-
-    public void setP(float p) {
-        this.p = p;
-    }
-
-    public float getO() {
-        return o;
-    }
-
-    public void setO(float o) {
-        this.o = o;
-    }
-
-    protected float x, y,z,q,k,r,p,o;
-
-
-    public Polygon affichage(){
-        return new Polygon();
-    }
-
 }

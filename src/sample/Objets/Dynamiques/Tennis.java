@@ -3,6 +3,7 @@ package sample.Objets.Dynamiques;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import sample.Objets.Dynamiques.Balle;
+import sample.Objets.Fixes.ObjetFixe;
 
 import java.util.ArrayList;
 
