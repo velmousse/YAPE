@@ -15,6 +15,7 @@ public class PlanIncline  extends ObjetFixe {
         y = _y;
         id = _id;
         autres = _a;
+        type = 0;
     }
 }
 

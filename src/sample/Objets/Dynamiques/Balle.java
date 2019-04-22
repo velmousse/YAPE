@@ -18,7 +18,7 @@ public class Balle extends Objet {
     protected double angle = 0;
     private int width = 1000, height = 810;
 
-    public void collision() { //Vérifier la collision ici avec les deux types d'objet en même temps
+    public void collision() {
         for (int i = id + 1; i < autres.size(); i++) {
             double dx = autres.get(i).x - x;
             double dy = autres.get(i).y - y;
@@ -46,37 +46,19 @@ public class Balle extends Objet {
         }
     }
 
-    //Ne pas utiliser
-    /*
-    public void collisionObjet(ObjetFixe objetFixe) {
+    public double getRayon() {return diametre / 2;}
 
-        if (objetFixe.getP() != 0) {
-            double minheight = objetFixe.getY();
-            double maxheight = objetFixe.getR();
-            double mindepth = objetFixe.getX();
-            double maxdepth = objetFixe.getK();
-            Rectangle rect = new Rectangle(mindepth, minheight, maxdepth, maxheight);
+    public double getX() {return x;}
 
-            Ellipse ellipse = new Ellipse(this.x, this.y, diametre, diametre);
+    public double getY() {return y;}
 
+    public double getVx() {return vx;}
 
-            Shape intersect = Shape.intersect(ellipse, rect);
-            if (intersect.getBoundsInLocal().getWidth() != -1||intersect.getBoundsInLocal().getHeight()!=-1) {
+    public double getVy() {return vy;}
 
-                double dx = ((rect.getX() + rect.getWidth()) / 2) - x;
-                double dy = ((rect.getY() + rect.getHeight()) / 2) - y;
+    public void setVx(double multiplicateur) {vx *= multiplicateur;}
 
-                double angle = Math.atan2(dy, dx),
-                        targetX = (x + (Math.cos(angle))),
-                        targetY = (y + (Math.sin(angle))),
-                        ax = (targetX - x) * 0.05,
-                        ay = (targetY - y) * 0.5;
-                vx -= ax;
-                vy -= ay;
-            }
-        }
-    }
-    */
+    public void setVy(double multiplicateur) {vy *= multiplicateur;}
 
     public void mouvement() {
         vy += gravite;

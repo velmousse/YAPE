@@ -55,13 +55,13 @@ public class Main extends Application {
         group = new Group();
         objets = new Group();
         uinterface = new Group();
-        group.getChildren().addAll(objets, uinterface); //Ordre prédéfini nécessaire
+        group.getChildren().addAll(objets, uinterface);
         Group root = new Group();
 
         Scene ecrandemarrage = new Scene(root, 600, 400);
 
         primaryStage.setTitle("");
-        scene = new Scene(group, 1200, 800);
+        scene = new Scene(group, 1210, 810);
 
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.S)
@@ -70,7 +70,7 @@ public class Main extends Application {
 
 
         scene.setOnMouseClicked(event -> {  //Ne pas oublier de vérifier s'il y a un imbriquement
-            if ((event.getX() > 0 && event.getX() < 1000) && pause) {
+            if ((event.getX() > 0 && event.getX() < 1000)) { //&& pause
                 if (selection[0]) {
                     balles.add(new Bowling((float) event.getX(), (float) event.getY(), balles.size(), balles, bowling));
                     objets.getChildren().add(balles.get(numBalles).affichage());
@@ -82,7 +82,7 @@ public class Main extends Application {
                     numBalles++;
                     numObjets++;
                 } else if (selection[2]) {
-                    //fixes.add(new PlanIncline((float) event.getX(), (float) event.getY() - 40, (float) event.getX() + 40, (float) event.getY(), (float) event.getX(), (float) event.getY()));
+                    fixes.add(new PlanIncline((float) event.getX(), (float) event.getY(), fixes.size(), balles));
                     objets.getChildren().add(fixes.get(numFixes).affichage());
                     numFixes++;
                     numObjets++;
@@ -125,24 +125,20 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 if (numObjets > 0) {
-                    int nombreDeBalles = 0;
-                    int nombreDePlansInclines = 0;
-                    int nombreDePlansDroits = 0;
+                    int nombreDeBalles = 0, nombreDePlans = 0;
                     for (int i = 0; i < numObjets; i++) {
                         Object objet = objets.getChildren().get(i);
                         if (objet instanceof Ellipse) {
                             balles.get(nombreDeBalles).mouvement();
                             balles.get(nombreDeBalles).collision();
-                            //for (int j = 0; j < balles.get(nombreDeBalles).getObjetsfixes().size(); j++)
-                              //  balles.get(nombreDeBalles).collisionObjet(balles.get(nombreDeBalles).getObjetsfixes().get(j));
                             objets.getChildren().set(i, balles.get(nombreDeBalles++).affichage());
-                        }
-                        if (objet instanceof Polygon) {
-
-                            if (((Polygon) objet).getPoints().size() == 6)
-                                objets.getChildren().set(i, fixes.get(nombreDePlansInclines++).affichage());
-                            if (((Polygon) objet).getPoints().size() == 8)
-                                objets.getChildren().set(i, fixes.get(nombreDePlansDroits++).affichage());
+                        } else if (objet instanceof Polygon) {
+                            fixes.get(nombreDePlans).collision();
+                            if (((Polygon) objet).getPoints().size() == 6) {
+                                objets.getChildren().set(i, fixes.get(nombreDePlans++).affichage());
+                            } else if (((Polygon) objet).getPoints().size() == 8) {
+                                objets.getChildren().set(i, fixes.get(nombreDePlans++).affichage());
+                            }
                         }
                     }
                 }
