@@ -11,8 +11,8 @@ public class PlanDroit extends ObjetFixe {
     public PlanDroit(float _x, float _y, int _id, ArrayList<Balle> _a) {
         x = _x;
         y = _y;
-        id = _id; //Utile?
         autres = _a;
         type = 1;
+        spring = 0.9;
     }
 }

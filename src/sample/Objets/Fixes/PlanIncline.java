@@ -13,9 +13,9 @@ public class PlanIncline  extends ObjetFixe {
     public PlanIncline(float _x, float _y, int _id, ArrayList<Balle> _a) {
         x = _x;
         y = _y;
-        id = _id;
         autres = _a;
         type = 0;
+        spring = 0.9;
     }
 }
 

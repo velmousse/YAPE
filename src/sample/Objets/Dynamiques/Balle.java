@@ -16,6 +16,7 @@ public class Balle extends Objet {
     protected double diametre, vx = 0, vy = 0, gravite = 0.09, spring = 0, masse = 0;
     protected ImagePattern pattern;
     protected double angle = 0;
+    protected boolean turned = false;
     private int width = 1000, height = 810;
 
     public void collision() {
@@ -56,9 +57,17 @@ public class Balle extends Objet {
 
     public double getVy() {return vy;}
 
+    public boolean isTurned() {return turned;}
+
+    public void setX(double _x) {x = _x;}
+
+    public void setY(double _y) {y = _y;}
+
     public void setVx(double multiplicateur) {vx *= multiplicateur;}
 
     public void setVy(double multiplicateur) {vy *= multiplicateur;}
+
+    public void setTurned(boolean tourne) {turned = tourne;}
 
     public void mouvement() {
         vy += gravite;

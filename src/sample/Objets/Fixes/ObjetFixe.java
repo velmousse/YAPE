@@ -17,20 +17,37 @@ public class ObjetFixe extends Objet {
 
     public void collision() {
         for (int i = 0; i < autres.size(); i++) {
+            Balle dynamique = autres.get(i);
+            Polygon plan = this.affichage();
+            Ellipse balle = dynamique.affichage();
+
             switch (type) {
                 case 0:
+                    if (balle.intersects(plan.getBoundsInLocal())) {
+                        if ((dynamique.getX() <= x - (20 + dynamique.getRayon()) || dynamique.getX() >= x + (20 + dynamique.getRayon())) && (dynamique.getY() <= y + (20 + dynamique.getRayon()) && dynamique.getY() >= y - (20 + dynamique.getRayon())))
+                            dynamique.setVx(-1 * spring);
+                        else if ((dynamique.getX() >= x - (20 + dynamique.getRayon()) && dynamique.getX() <= x + (20 + dynamique.getRayon())) && (dynamique.getY() >= y + (20 + dynamique.getRayon()) || dynamique.getY() <= y - (20 + dynamique.getRayon())))
+                            dynamique.setVy(-1 * spring);
 
+                        if (dynamique.getVy() <= 0 && dynamique.getVy() > -0.5) {
+                            dynamique.setVy(0);
+                            dynamique.setY(dynamique.getY() - 0.2);
+                        }
+                    }
                     break;
                 case 1:
-                    Balle dynamique = autres.get(i);
-                    Polygon plan = this.affichage();
-                    Ellipse balle = dynamique.affichage();
+                    if (!dynamique.isTurned()) {
+                        if (balle.intersects(plan.getBoundsInLocal())) {
+                            if ((dynamique.getX() <= x - (40 + dynamique.getRayon()) || dynamique.getX() >= x + (40 + dynamique.getRayon())) && (dynamique.getY() <= y + (20 + dynamique.getRayon()) && dynamique.getY() >= y - (20 + dynamique.getRayon())))
+                                dynamique.setVx(-1 * spring);
+                            else if ((dynamique.getX() >= x - (40 + dynamique.getRayon()) && dynamique.getX() <= x + (40 + dynamique.getRayon())) && (dynamique.getY() >= y + (20 + dynamique.getRayon()) || dynamique.getY() <= y - (20 + dynamique.getRayon())))
+                                dynamique.setVy(-1 * spring);
 
-                    if (balle.intersects(plan.getBoundsInLocal())) {
-                        if ((dynamique.getX() <= x - (40 + dynamique.getRayon()) || dynamique.getX() >= x + (40 + dynamique.getRayon())) && (dynamique.getY() <= y + (20 + dynamique.getRayon()) && dynamique.getY() >= y - (20+dynamique.getRayon())))
-                            dynamique.setVx(-1);
-                        if ((dynamique.getX() >= x - (40 + dynamique.getRayon()) && dynamique.getX() <= x + (40 + dynamique.getRayon())) && (dynamique.getY() >= y + (20 + dynamique.getRayon()) || dynamique.getY() <= y - (20 + dynamique.getRayon())))
-                            dynamique.setVy(-1);
+                            if (dynamique.getVy() <= 0 && dynamique.getVy() > -0.5) {
+                                dynamique.setVy(0);
+                                dynamique.setY(dynamique.getY() - 0.2);
+                            }
+                        }
                     }
                     break;
             }

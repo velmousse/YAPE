@@ -42,8 +42,6 @@ public class Main extends Application {
     private int numBalles = 0, numFixes = 0, numObjets = 0;
     private ArrayList<Balle> balles = new ArrayList<>();
     private ArrayList<ObjetFixe> fixes = new ArrayList<>();
-    //private ArrayList<PlanIncline> planInclines = new ArrayList<>();
-    //private ArrayList<PlanDroit> planDroits = new ArrayList<>();
 
     public static void main(String[] args) {
         launch(args);
