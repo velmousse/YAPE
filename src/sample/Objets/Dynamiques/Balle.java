@@ -3,6 +3,8 @@ package sample.Objets.Dynamiques;
 
 import javafx.geometry.Bounds;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.*;
 import sample.Objets.Objet;
@@ -90,8 +92,6 @@ public class Balle extends Objet {
                 vx -= ax;
                 vy -= ay;
             }
-
-
         }
     }
 

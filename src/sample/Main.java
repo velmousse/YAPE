@@ -13,6 +13,8 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Ellipse;
@@ -30,6 +32,7 @@ import sample.Objets.Dynamiques.Tennis;
 import sample.Objets.Objet;
 import sun.plugin2.util.ColorUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class Main extends Application {
@@ -45,6 +48,7 @@ public class Main extends Application {
     private int numBalles = 0, numPlanInclines = 0, numObjets = 0, numPlanDroits = 0;
     private ArrayList<Balle> balles = new ArrayList<>();
 
+
     public static void main(String[] args) { launch(args); }
 
     @Override
@@ -56,16 +60,22 @@ public class Main extends Application {
         group.getChildren().addAll(objets, uinterface); //Ordre prédéfini nécessaire
         Group root= new Group();
 
-        Scene ecrandemarrage=new Scene(root,600,400);
 
-        primaryStage.setTitle("");
+        Scene ecrandemarrage=new Scene(root,1200,800);
+
         scene = new Scene(group, 1200, 800);
+        String musicFile = "awesome.mp3";
+
+        Media sound = new Media(new File(musicFile).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+
 
         scene.setOnKeyPressed(event -> {if (event.getCode() == KeyCode.S)
-            timeline.play(); });
+            timeline.play();
+            });
 
 
-        scene.setOnMouseClicked(event -> {  //Ne pas oublier de vérifier s'il y a un imbriquement
+        scene.setOnMouseClicked(event -> {
             if ((event.getX() > 0 && event.getX() < 1000) && pause) {
                 if (selection[0]) {
                     balles.add(new Bowling((float) event.getX(), (float) event.getY(), balles.size(), balles, bowling));
@@ -96,14 +106,13 @@ public class Main extends Application {
             }
         });
 
-
-
         Button newGame= new Button("Nouvelle Partie");
         newGame.setPrefHeight(50);
         newGame.setPrefWidth(100);
         newGame.setTranslateX(30);
         newGame.setTranslateY(250);
-        newGame.setOnAction(event -> primaryStage.setScene(scene));
+        newGame.setOnAction(event -> {primaryStage.setScene(scene);mediaPlayer.play();});
+        primaryStage.setTitle("");
 
         Button quitter= new Button("Quitter");
         quitter.setPrefHeight(50);
