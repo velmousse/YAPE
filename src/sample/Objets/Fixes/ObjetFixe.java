@@ -1,10 +1,12 @@
 package sample.Objets.Fixes;
 
+import javafx.geometry.Bounds;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import sample.Objets.Dynamiques.Balle;
 import sample.Objets.Objet;
 
@@ -21,8 +23,11 @@ public class ObjetFixe extends Objet {
             Polygon plan = this.affichage();
             Ellipse balle = dynamique.affichage();
 
+
             switch (type) {
                 case 0:
+                    Shape inter = Shape.intersect(balle,plan);
+
                     if (balle.intersects(plan.getBoundsInLocal())) {
                         if ((dynamique.getX() <= x - (20 + dynamique.getRayon()) || dynamique.getX() >= x + (20 + dynamique.getRayon())) && (dynamique.getY() <= y + (20 + dynamique.getRayon()) && dynamique.getY() >= y - (20 + dynamique.getRayon())))
                             dynamique.setVx(-1 * spring);
@@ -36,15 +41,17 @@ public class ObjetFixe extends Objet {
                     }
                     break;
                 case 1:
+
                     if (!dynamique.isTurned()) {
                         if (balle.intersects(plan.getBoundsInLocal())) {
                             if ((dynamique.getX() <= x - (40 + dynamique.getRayon()) || dynamique.getX() >= x + (40 + dynamique.getRayon())) && (dynamique.getY() <= y + (20 + dynamique.getRayon()) && dynamique.getY() >= y - (20 + dynamique.getRayon())))
                                 dynamique.setVx(-1 * spring);
                             else if ((dynamique.getX() >= x - (40 + dynamique.getRayon()) && dynamique.getX() <= x + (40 + dynamique.getRayon())) && (dynamique.getY() >= y + (20 + dynamique.getRayon()) || dynamique.getY() <= y - (20 + dynamique.getRayon())))
-                                dynamique.setVy(-1 * spring);
+                                dynamique.setVyi(-1 * dynamique.getVyi());
 
-                            if (dynamique.getVy() <= 0 && dynamique.getVy() > -0.5) {
-                                dynamique.setVy(0);
+                            if (dynamique.getVyf() <= 0 && dynamique.getVyf() > -0.5) {
+                                dynamique.setVyi(0);
+                                dynamique.setVyf(0);
                                 dynamique.setY(dynamique.getY() - 0.2);
                             }
                         }

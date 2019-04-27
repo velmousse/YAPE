@@ -1,6 +1,7 @@
 package sample.Objets.Dynamiques;
 
 
+import javafx.animation.TranslateTransition;
 import javafx.geometry.Bounds;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.paint.ImagePattern;
@@ -13,11 +14,30 @@ import java.util.ArrayList;
 import sample.Objets.Fixes.ObjetFixe;
 
 public class Balle extends Objet {
-    protected double diametre, vx = 0, vy = 0, gravite = 0.09, spring = 0, masse = 0;
+    protected double diametre, vx = 0, vy = 0, gravite = 0.09, spring = 0, masse = 0,vxi=0,vxf=0,vyi=0,vyf=0,dy=0;
     protected ImagePattern pattern;
     protected double angle = 0;
     protected boolean turned = false;
     private int width = 1000, height = 810;
+    protected double pixel= 37.795275591;
+    protected double gravite1= pixel*9.8;
+    double tempsinitial= System.currentTimeMillis()/1000.00;
+
+    public void setVyi(double vyi) {
+        this.vyi = vyi;
+    }
+
+    public void setVyf(double vyf) {
+        this.vyf = vyf;
+    }
+
+    public double getVyi() {
+        return vyi;
+    }
+
+    public double getVyf() {
+        return vyf;
+    }
 
     public void collision() {
         for (int i = id + 1; i < autres.size(); i++) {
@@ -70,10 +90,15 @@ public class Balle extends Objet {
     public void setTurned(boolean tourne) {turned = tourne;}
 
     public void mouvement() {
-        vy += gravite;
-        x += vx;
-        y += vy;
 
+        double tempsfinal= (System.currentTimeMillis()/1000.00);
+        double deltat=tempsfinal-tempsinitial;
+        tempsinitial=tempsfinal;
+        vyf=vyi+(gravite1*deltat) ;
+        dy=(vyi+vyf)*deltat/2;
+        vyi=vyf;
+        y +=dy ;
+        x += vx;
         if (vx > 0)
             vx -= 0.001;
         else if (vx < 0)
@@ -91,14 +116,15 @@ public class Balle extends Objet {
         }
         if (y + diametre > height) {
             y = height - diametre;
-            vy *= friction;
+            vyi *= friction;
 
 
         } else if (y - diametre < 0) {
             y = diametre;
-            vy *= friction;
+            vyi *= friction;
 
         }
+
     }
 
     public Ellipse affichage() {
