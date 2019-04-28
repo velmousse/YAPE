@@ -53,13 +53,16 @@ public class Main extends Application {
         group = new Group();
         objets = new Group();
         uinterface = new Group();
+
         group.getChildren().addAll(objets, uinterface);
         Group root = new Group();
+        group.setTranslateX(0);
+        group.setTranslateY(0);
 
         Scene ecrandemarrage = new Scene(root, 600, 400);
-
         primaryStage.setTitle("");
         scene = new Scene(group, 1210, 810);
+
 
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.S)
@@ -99,7 +102,11 @@ public class Main extends Application {
         newGame.setPrefWidth(100);
         newGame.setTranslateX(30);
         newGame.setTranslateY(250);
-        newGame.setOnAction(event -> primaryStage.setScene(scene));
+        newGame.setOnAction(event -> {primaryStage.setScene(scene);
+        primaryStage.setX(0);
+        primaryStage.setY(0);
+        primaryStage.setHeight(810);
+        primaryStage.setWidth(1210);});
 
         Button quitter = new Button("Quitter");
         quitter.setPrefHeight(50);
@@ -142,7 +149,7 @@ public class Main extends Application {
                 }
             }
         }
-        ), new KeyFrame(Duration.millis(10)));
+        ), new KeyFrame(Duration.millis(15)));
         timeline.setCycleCount(Animation.INDEFINITE);
         primaryStage.show();
     }
@@ -172,7 +179,6 @@ public class Main extends Application {
         });
 
         Group selections = setSelections();
-
         uinterface.getChildren().addAll(menuDroit, restart, start, selections);
     }
 

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import sample.Objets.Fixes.ObjetFixe;
 
 public class Balle extends Objet {
-    protected double diametre, vx = 0, vy = 0, gravite = 0.09, spring = 0, masse = 0,vxi=0,vxf=0,vyi=0,vyf=0,dy=0;
+    protected double diametre, vx = 0, vy = 0, gravite = 0.09, spring = 0, masse = 0,vxi=0.00,vxf=0,vyi=0.01,vyf=0,dy=0;
     protected ImagePattern pattern;
     protected double angle = 0;
     protected boolean turned = false;
@@ -53,15 +53,15 @@ public class Balle extends Objet {
                         ay = ((targetY - autres.get(i).y) * spring);
 
                 if (autres.get(i).masse >= masse) {
-                    vx -= ax;
-                    vy -= ay;
+                    vx  -= ax;
+                    vyf -= ay;
                     autres.get(i).vx += ax * (masse / autres.get(i).masse);
-                    autres.get(i).vy += ay * (masse / autres.get(i).masse);
+                    autres.get(i).vyf += ay * (masse / autres.get(i).masse);
                 } else if (autres.get(i).masse <= masse) {
                     vx -= ax * (autres.get(i).masse / masse);
-                    vy -= ay * (autres.get(i).masse / masse);
+                    vyf -= ay * (autres.get(i).masse / masse);
                     autres.get(i).vx += ax;
-                    autres.get(i).vy += ay;
+                    autres.get(i).vyf += ay;
                 }
             }
         }
@@ -83,22 +83,65 @@ public class Balle extends Objet {
 
     public void setY(double _y) {y = _y;}
 
-    public void setVx(double multiplicateur) {vx *= multiplicateur;}
+    public void setVx(double vx) {
+        this.vx = vx;
+    }
 
     public void setVy(double multiplicateur) {vy *= multiplicateur;}
 
     public void setTurned(boolean tourne) {turned = tourne;}
+
+    public double getDy() {
+        return dy;
+    }
+
+    public void setDy(double dy) {
+        this.dy = dy;
+    }
+
+    public double getVxi() {
+        return vxi;
+    }
+
+    public double getGravite1() {
+        return gravite1;
+    }
+
+    public void setGravite1(double gravite1) {
+        this.gravite1 = gravite1;
+    }
+
+    public double getTempsinitial() {
+        return tempsinitial;
+    }
+
+    public void setTempsinitial(double tempsinitial) {
+        this.tempsinitial = tempsinitial;
+    }
+
+    public void setVxi(double vxi) {
+        this.vxi = vxi;
+    }
+
+    public double getVxf() {
+        return vxf;
+    }
+
+    public void setVxf(double vxf) {
+        this.vxf = vxf;
+    }
 
     public void mouvement() {
 
         double tempsfinal= (System.currentTimeMillis()/1000.00);
         double deltat=tempsfinal-tempsinitial;
         tempsinitial=tempsfinal;
-        vyf=vyi+(gravite1*deltat) ;
-        dy=(vyi+vyf)*deltat/2;
-        vyi=vyf;
-        y +=dy ;
-        x += vx;
+
+            vyf = vyi + (gravite1 * deltat);
+            dy = (vyi + vyf) * deltat / 2;
+            vyi = vyf;
+            y += dy;
+            x += vx;
         if (vx > 0)
             vx -= 0.001;
         else if (vx < 0)
@@ -131,7 +174,7 @@ public class Balle extends Objet {
         Ellipse retour = new Ellipse(x, y, diametre, diametre);
         retour.setFill(pattern);
         angle += vx;
-        retour.setRotate(angle);
+        retour.setRotate(angle/2);
         retour.autosize();
         return retour;
     }

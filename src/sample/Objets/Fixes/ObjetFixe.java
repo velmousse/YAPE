@@ -3,10 +3,7 @@ package sample.Objets.Fixes;
 import javafx.geometry.Bounds;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Ellipse;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
+import javafx.scene.shape.*;
 import sample.Objets.Dynamiques.Balle;
 import sample.Objets.Objet;
 
@@ -26,19 +23,64 @@ public class ObjetFixe extends Objet {
 
             switch (type) {
                 case 0:
-                    Shape inter = Shape.intersect(balle,plan);
 
-                    if (balle.intersects(plan.getBoundsInLocal())) {
-                        if ((dynamique.getX() <= x - (20 + dynamique.getRayon()) || dynamique.getX() >= x + (20 + dynamique.getRayon())) && (dynamique.getY() <= y + (20 + dynamique.getRayon()) && dynamique.getY() >= y - (20 + dynamique.getRayon())))
-                            dynamique.setVx(-1 * spring);
-                        else if ((dynamique.getX() >= x - (20 + dynamique.getRayon()) && dynamique.getX() <= x + (20 + dynamique.getRayon())) && (dynamique.getY() >= y + (20 + dynamique.getRayon()) || dynamique.getY() <= y - (20 + dynamique.getRayon())))
-                            dynamique.setVy(-1 * spring);
+                    //coté oblique
+                    double vecteurux = dynamique.getX() - (x + 20);
+                    double vecteuruy = dynamique.getY() - (y + 20);
+                    double vecteurvx = -40;
+                    double vecteurvy = -40;
+                    double produitscalaire = vecteurux * vecteurvx + (vecteuruy * vecteurvy);
+                    double norme = (vecteurvx * vecteurvx) + (vecteurvy * vecteurvy);
+                    double vecteurresultantx = produitscalaire / norme * vecteurvx;
+                    double vecteurresultanty = produitscalaire / norme * vecteurvy;
+                    double normevecteurresultant = Math.sqrt((vecteurresultantx * vecteurresultantx) + (vecteurresultanty * vecteurresultanty));
+                    double normevecteuru = Math.sqrt((vecteurux * vecteurux) + (vecteuruy * vecteuruy));
+                    double vecteurdecollision = Math.sqrt((normevecteuru * normevecteuru) - (normevecteurresultant * normevecteurresultant));
 
-                        if (dynamique.getVy() <= 0 && dynamique.getVy() > -0.5) {
-                            dynamique.setVy(0);
-                            dynamique.setY(dynamique.getY() - 0.2);
-                        }
+                    //coté horizontal
+
+                    double hvecteurux = dynamique.getX() - (x - 20);
+                    double hvecteuruy = (y + 20) - dynamique.getY();
+                    double hvecteurvx = -40;
+                    double hvecteurvy = 0;
+                    double hproduitscalaire = hvecteurux * hvecteurvx + (hvecteuruy * hvecteurvy);
+                    double hnorme = (hvecteurvx * hvecteurvx) + (hvecteurvy * hvecteurvy);
+                    double hvecteurresultantx = hproduitscalaire / hnorme * hvecteurvx;
+                    double hvecteurresultanty = hproduitscalaire / hnorme * hvecteurvy;
+                    double hnormevecteurresultant = Math.sqrt((hvecteurresultantx * hvecteurresultantx) + (hvecteurresultanty * hvecteurresultanty));
+                    double hnormevecteuru = Math.sqrt((hvecteurux * hvecteurux) + (hvecteuruy * hvecteuruy));
+                    double hvecteurdecollision = Math.sqrt((hnormevecteuru * hnormevecteuru) - (hnormevecteurresultant * hnormevecteurresultant));
+
+                    //cote vertical
+
+                    double vvecteurux = dynamique.getX() - (x - 20);
+                    double vvecteuruy = dynamique.getY() - (y - 20);
+                    double vvecteurvx = 0;
+                    double vvecteurvy = -40;
+                    double vproduitscalaire = vvecteurux * vvecteurvx + (vvecteuruy * vvecteurvy);
+                    double vnorme = (vvecteurvx * vvecteurvx) + (vvecteurvy * vvecteurvy);
+                    double vvecteurresultantx = vproduitscalaire / vnorme * vvecteurvx;
+                    double vvecteurresultanty = vproduitscalaire / vnorme * vvecteurvy;
+                    double vnormevecteurresultant = Math.sqrt((vvecteurresultantx * vvecteurresultantx) + (vvecteurresultanty * vvecteurresultanty));
+                    double vnormevecteuru = Math.sqrt((vvecteurux * vvecteurux) + (vvecteuruy * vvecteuruy));
+                    double vvecteurdecollision = Math.sqrt((vnormevecteuru * vnormevecteuru) - (vnormevecteurresultant * vnormevecteurresultant));
+
+
+                    if (vvecteurdecollision - 7 <= dynamique.getRayon() && dynamique.getY() <= y + 20 && dynamique.getY() >= y - 20)
+                        dynamique.setVx(-1 * dynamique.getVx());
+                    if (hvecteurdecollision - 7 <= dynamique.getRayon() && dynamique.getX() <= x + 20 && dynamique.getX() >= x - (20))
+                        dynamique.setVyi(-1 * dynamique.getVyi());
+                    if (vecteurdecollision - 7 <= dynamique.getRayon() && dynamique.getX() <= x + 20 && dynamique.getX() >= x - (20)) {
+                        if (dynamique.getVx() == 0) {
+                            dynamique.setVx(1);
+                        } else dynamique.setVyi(dynamique.getVyi() * -1);
                     }
+                    if (dynamique.getVyi() <= 0 && dynamique.getVyi() > -.5 && vecteurdecollision > dynamique.getRayon()) {
+                        dynamique.setVyf(0);
+                        dynamique.setY(dynamique.getY() - 0.2);
+                    }
+
+
                     break;
                 case 1:
 
@@ -47,12 +89,12 @@ public class ObjetFixe extends Objet {
                             if ((dynamique.getX() <= x - (40 + dynamique.getRayon()) || dynamique.getX() >= x + (40 + dynamique.getRayon())) && (dynamique.getY() <= y + (20 + dynamique.getRayon()) && dynamique.getY() >= y - (20 + dynamique.getRayon())))
                                 dynamique.setVx(-1 * spring);
                             else if ((dynamique.getX() >= x - (40 + dynamique.getRayon()) && dynamique.getX() <= x + (40 + dynamique.getRayon())) && (dynamique.getY() >= y + (20 + dynamique.getRayon()) || dynamique.getY() <= y - (20 + dynamique.getRayon())))
-                                dynamique.setVyi(-1 * dynamique.getVyi());
+                                dynamique.setVyi(-1 * dynamique.getVyi() * spring);
 
-                            if (dynamique.getVyf() <= 0 && dynamique.getVyf() > -0.5) {
-                                dynamique.setVyi(0);
+                            if (dynamique.getVyf() <= 0 && dynamique.getVyf() > -5000) {
                                 dynamique.setVyf(0);
-                                dynamique.setY(dynamique.getY() - 0.2);
+                                dynamique.setDy(0);
+
                             }
                         }
                     }
@@ -80,4 +122,5 @@ public class ObjetFixe extends Objet {
         }
         return retour;
     }
+
 }
