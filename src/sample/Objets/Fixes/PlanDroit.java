@@ -14,7 +14,7 @@ public class PlanDroit extends ObjetFixe {
         y = _y;
         autres = _a;
         type = 1;
-        spring = 0.9;
+        spring = 0.91;
         this.image = new ImagePattern(image);
     }
 }

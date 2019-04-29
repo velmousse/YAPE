@@ -19,7 +19,10 @@ public class Fin {
 
     public boolean collision(Ellipse balle) {
         boolean retour = false;
-        if (affichage().intersects(balle.getBoundsInLocal()))
+
+        double hvecteur = vecteurcollisionneur(x,y,0,-175,balle.getCenterX(),balle.getCenterY());
+        double rayonok= Math.sqrt((balle.getRadiusX()*balle.getRadiusX())+(balle.getRadiusY()*balle.getCenterY()));
+        if (hvecteur-balle.getRadiusY()<=balle.getRadiusY())
             retour = true;
         return retour;
     }
@@ -27,8 +30,19 @@ public class Fin {
     public Rectangle affichage() {
         Rectangle retour = new Rectangle(175, 175);
         retour.setFill(Color.INDIANRED);
-        retour.setTranslateX(x);
-        retour.setTranslateY(y);
+        retour.setX(x);
+        retour.setY(y);
         return retour;
+    }
+    public double vecteurcollisionneur(double débutvecteurux, double debutvecteuruy, double longueurx, double longueury, double rayonx, double rayony) {
+        double vvecteurux = rayonx - débutvecteurux;
+        double vvecteuruy = rayony - debutvecteuruy;
+        double vproduitscalaire = vvecteurux * longueurx + (vvecteuruy * longueury);
+        double vnorme = (longueurx * longueurx) + (longueury * longueury);
+        double vvecteurresultantx = vproduitscalaire / vnorme * longueurx;
+        double vvecteurresultanty = vproduitscalaire / vnorme * longueury;
+        double vnormevecteurresultant = Math.sqrt((vvecteurresultantx * vvecteurresultantx) + (vvecteurresultanty * vvecteurresultanty));
+        double vnormevecteuru = Math.sqrt((vvecteurux * vvecteurux) + (vvecteuruy * vvecteuruy));
+        return Math.sqrt((vnormevecteuru * vnormevecteuru) - (vnormevecteurresultant * vnormevecteurresultant));
     }
 }

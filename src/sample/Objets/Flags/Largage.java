@@ -28,8 +28,8 @@ public class Largage {
     public Rectangle affichage() {
         Rectangle retour = new Rectangle(175, 175);
         retour.setFill(Color.LIGHTGREEN);
-        retour.setTranslateX(x);
-        retour.setTranslateY(y);
+        retour.setX(x);
+        retour.setY(y);
         return retour;
     }
 }

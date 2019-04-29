@@ -41,6 +41,10 @@ public class Balle extends Objet {
         return vyf;
     }
 
+    public double getSpring() {
+        return spring;
+    }
+
     public void collision() {
         for (int i = id + 1; i < autres.size(); i++) {
             double dx = autres.get(i).x - x;
@@ -51,19 +55,22 @@ public class Balle extends Objet {
                 double angle = Math.atan2(dy, dx),
                         targetX = (x + Math.cos(angle) * minDist),
                         targetY = (y + Math.sin(angle) * minDist),
-                        ax = ((targetX - autres.get(i).x) * spring)*.5,
-                        ay = ((targetY - autres.get(i).y) * spring);
+                        ax = ((targetX - autres.get(i).x) * 0.7)*.5,
+                        ay = ((targetY - autres.get(i).y) * 0.7);
 
                 if (autres.get(i).masse >= masse) {
                     vx  -= ax*.5;
+                    if(vyi>0)
                     vyi-= ay;
+                    if(vyi<=0)
+                    vyi=vyi*-1*spring;
                     autres.get(i).vx += ax * (masse / autres.get(i).masse)*.5;
                     autres.get(i).vyi += ay * (masse / autres.get(i).masse);
                 } else  {
                     vx -= ax * (autres.get(i).masse / masse)*.5;
                     vyi -= ay * (autres.get(i).masse / masse);
-                    autres.get(i).vx += ax;
-                    autres.get(i).vyi += ay;
+                    autres.get(i).vx += ax*.5;
+                    autres.get(i).vyi += ay*.5;
                 }
             }
         }
@@ -144,9 +151,9 @@ public class Balle extends Objet {
             y += dy;
             x += vx;
         if (vx > 0)
-            vx -= 0.01;
+            vx -= 0.001;
         else if (vx < 0)
-            vx += 0.01;
+            vx += 0.001;
 
         if (x + diametre > width) {
             x = width - diametre;
@@ -155,6 +162,7 @@ public class Balle extends Objet {
 
         } else if (x - diametre < 0) {
             x = diametre;
+
             vx *= friction;
 
         }
@@ -174,7 +182,7 @@ public class Balle extends Objet {
     public Ellipse affichage() {
         Ellipse retour = new Ellipse(x, y, diametre, diametre);
         retour.setFill(pattern);
-        angle += vx*.15;
+        angle += vx;
         retour.setRotate(angle/2);
         retour.autosize();
         return retour;

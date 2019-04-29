@@ -121,11 +121,13 @@ public class Main extends Application {
         charger.setTranslateX(235);
         charger.setOnAction(event -> {
             niveau = true;
-            genese = new GenerateurNiveaux(objets, limites, balles, fixes, bowling, tennis, wood, numBalles, numFixes, numObjets, largage, fin);
+            genese = new GenerateurNiveaux(objets, limites, balles, fixes, bowling, tennis, wood, numBalles, numFixes, numObjets, largage, fin, flags);
             genese.niveau();
             numObjets = genese.getNumObjets();
             numBalles = genese.getNumBalles();
             numFixes = genese.getNumFixes();
+            fin = genese.getFin();
+            largage = genese.getLargage();
             primaryStage.setX(375);
             primaryStage.setY(125);
             primaryStage.setScene(scene);
@@ -143,19 +145,11 @@ public class Main extends Application {
         scene.setOnMouseClicked(event -> {
             if ((event.getX() > 0 && event.getX() < 1000) && pause) {
                 if (selection[0] && limites[0] > 0) {
-                    if (largage != null) {
-                        balles.add(new Bowling((float) event.getX(), (float) event.getY(), balles.size(), balles, bowling));
-                        objets.getChildren().add(balles.get(numObjets).affichage());
-                        if (largage.affichage().intersects(balles.get(numBalles).affichage().getBoundsInLocal())) {
-                            balles.remove(numBalles);
-                            objets.getChildren().remove(numObjets);
-                        } else {
-                            limites[0]--;
-                            numBalles++;
-                            numObjets++;
-                        }
-
-                    }
+                    balles.add(new Bowling((float) event.getX(), (float) event.getY(), balles.size(), balles, bowling));
+                    objets.getChildren().add(balles.get(numBalles).affichage());
+                    limites[0]--;
+                    numBalles++;
+                    numObjets++;
                 } else if (selection[1] && limites[1] > 0) {
                     balles.add(new Tennis((float) event.getX(), (float) event.getY(), balles.size(), balles, tennis));
                     objets.getChildren().add(balles.get(numBalles).affichage());
@@ -206,8 +200,16 @@ public class Main extends Application {
                             balles.get(nombreDeBalles).mouvement();
                             balles.get(nombreDeBalles).collision();
                             objets.getChildren().set(i, balles.get(nombreDeBalles).affichage());
-                            if (fin.collision(balles.get(nombreDeBalles).affichage())) {
-                                ////////
+                            if (fin != null) {
+                                if (fin.collision(balles.get(nombreDeBalles).affichage())) {
+                                    timeline.stop();
+                                    Alert reussite = new Alert(Alert.AlertType.INFORMATION);
+                                    reussite.setTitle("YAY!");
+                                    reussite.setHeaderText("Complétion du niveau");
+                                    reussite.setContentText("Vous avez complété le niveau");
+                                    reussite.show();
+                                    resetScene();
+                                }
                             }
                             nombreDeBalles++;
                         } else if (objet instanceof Polygon) {
@@ -249,7 +251,7 @@ public class Main extends Application {
         start.setScaleX(1.5);
         start.setScaleY(1.5);
         start.setOnAction(event -> {
-            if (fin != null && largage != null) {
+            if (largage != null) {
                 timeline.play();
                 pause = false;
             }
@@ -417,10 +419,13 @@ public class Main extends Application {
         objets.getChildren().clear();
         flags.getChildren().clear();
         if (niveau) {
+            genese.resetGenerateur();
             genese.niveau();
             numObjets = genese.getNumObjets();
             numBalles = genese.getNumBalles();
             numFixes = genese.getNumFixes();
+            fin = genese.getFin();
+            largage = genese.getLargage();
         } else {
             numBalles = 0;
             numFixes = 0;

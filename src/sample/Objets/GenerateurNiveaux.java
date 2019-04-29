@@ -1,6 +1,5 @@
 package sample.Objets;
 
-import javafx.beans.binding.BooleanExpression;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import sample.Objets.Dynamiques.Balle;
@@ -15,7 +14,7 @@ import sample.Objets.Flags.Largage;
 import java.util.ArrayList;
 
 public class GenerateurNiveaux {
-    private Group objets;
+    private Group objets, flags;
     private int[] limites;
     private ArrayList<Balle> balles;
     private ArrayList<ObjetFixe> fixes;
@@ -24,7 +23,7 @@ public class GenerateurNiveaux {
     private Fin fin;
     private Largage largage;
 
-    public GenerateurNiveaux(Group _objets, int[] _limites, ArrayList<Balle> _balles, ArrayList<ObjetFixe> _fixes, Image _bowling, Image _tennis, Image _wood, int _numBalles, int _numFixes, int _numObjets, Largage _largage, Fin _fin) {
+    public GenerateurNiveaux(Group _objets, int[] _limites, ArrayList<Balle> _balles, ArrayList<ObjetFixe> _fixes, Image _bowling, Image _tennis, Image _wood, int _numBalles, int _numFixes, int _numObjets, Largage _largage, Fin _fin, Group _flags) {
         objets = _objets;
         limites = _limites;
         balles = _balles;
@@ -37,15 +36,30 @@ public class GenerateurNiveaux {
         numObjets = _numObjets;
         largage = _largage;
         fin = _fin;
+        flags = _flags;
     }
 
     public void niveau() {
         for (int i = 0; i < limites.length; i++)
-            limites[i] = 5;
-        ajouterBowling(120, 130);
-        ajouterTennis(170, 130);
-        ajouterPlanDroit(190, 500);
-        ajouterPlanIncline(190, 50);
+            limites[i] = 0;
+        limites[1] = 1;
+
+        ajouterLargage(88, 88);
+        ajouterFin(925, 710 - 85);
+        ajouterPlanIncline(88, 200);
+
+        ajouterTennis(405, 240);
+
+        int x = 120;
+        for (int i = 0; i < 5; i++)
+            ajouterPlanDroit(x += 80, 300);
+
+        int y = 10;
+        x = 800;
+        for (int i = 0; i < 14; i++)
+            ajouterPlanDroit(x, y += 40);
+
+        ajouterPlanIncline(680, 630);
     }
 
     private void ajouterBowling(int x, int y) {
@@ -77,12 +91,42 @@ public class GenerateurNiveaux {
     }
 
     private void ajouterLargage(int x, int y) {
-
+        largage = new Largage(balles, x - 175 / 2, y - 175 / 2);
+        flags.getChildren().add(largage.affichage());
     }
 
-    public int getNumBalles() {return numBalles;}
+    private void ajouterFin(int x, int y) {
+        fin = new Fin(balles, x - 175 / 2, y - 175 / 2);
+        flags.getChildren().add(fin.affichage());
+    }
 
-    public int getNumFixes() {return numFixes;}
+    public void resetGenerateur() {
+        balles.clear();
+        fixes.clear();
+        flags.getChildren().clear();
+        objets.getChildren().clear();
+        numBalles = 0;
+        numFixes = 0;
+        numObjets = 0;
+    }
 
-    public int getNumObjets() {return numObjets;}
+    public int getNumBalles() {
+        return numBalles;
+    }
+
+    public int getNumFixes() {
+        return numFixes;
+    }
+
+    public int getNumObjets() {
+        return numObjets;
+    }
+
+    public Fin getFin() {
+        return fin;
+    }
+
+    public Largage getLargage() {
+        return largage;
+    }
 }
