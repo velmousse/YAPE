@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8062ac53-74b7-4d0c-bef9-d7916647450f" name="Default" comment="vecteurs de collision a perfectionner...&#10;balles immobiles sur plan droit ne passent plus au travers&#10;le temps est réglé">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ressources/wood.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/sample/Objets/Flags/Fin.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/sample/Objets/Flags/Largage.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/sample/Objets/GenerateurNiveaux.java" />
+    <list default="true" id="8062ac53-74b7-4d0c-bef9-d7916647450f" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Tests/sample/Main$1.class" afterPath="$PROJECT_DIR$/out/production/Tests/sample/Main$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Tests/sample/Main.class" afterPath="$PROJECT_DIR$/out/production/Tests/sample/Main.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Tests/sample/Objets/Dynamiques/Balle.class" afterPath="$PROJECT_DIR$/out/production/Tests/sample/Objets/Dynamiques/Balle.class" />
@@ -13,10 +9,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Tests/sample/Objets/Fixes/PlanDroit.class" afterPath="$PROJECT_DIR$/out/production/Tests/sample/Objets/Fixes/PlanDroit.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Tests/sample/Objets/Fixes/PlanIncline.class" afterPath="$PROJECT_DIR$/out/production/Tests/sample/Objets/Fixes/PlanIncline.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/Main.java" afterPath="$PROJECT_DIR$/src/sample/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/Objets/Fixes/ObjetFixe.java" afterPath="$PROJECT_DIR$/src/sample/Objets/Fixes/ObjetFixe.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/Objets/Fixes/PlanDroit.java" afterPath="$PROJECT_DIR$/src/sample/Objets/Fixes/PlanDroit.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sample/Objets/Fixes/PlanIncline.java" afterPath="$PROJECT_DIR$/src/sample/Objets/Fixes/PlanIncline.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -80,8 +72,8 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sample/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1056">
-              <caret line="152" column="41" lean-forward="true" selection-start-line="152" selection-start-column="41" selection-end-line="152" selection-end-column="41" />
+            <state relative-caret-position="104">
+              <caret line="96" column="35" lean-forward="true" selection-start-line="96" selection-start-column="35" selection-end-line="96" selection-end-column="35" />
               <folding>
                 <element signature="e#0#16814#0" expanded="true" />
                 <element signature="e#2138#2139#0" expanded="true" />
@@ -189,9 +181,12 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="Vincent" />
+        <entry key="$PROJECT_DIR$" value="CIboire" />
       </map>
     </option>
+    <push-targets>
+      <push-target-info target-remote="origin" target-branch="Vincent" repo="$PROJECT_DIR$" source="CIboire" />
+    </push-targets>
   </component>
   <component name="GradleLocalSettings">
     <option name="externalProjectsViewState">
@@ -472,14 +467,22 @@
       <option name="project" value="LOCAL" />
       <updated>1556511679373</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Interface améliorée">
+      <created>1556569823891</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1556569823891</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13586000" />
+    <option name="totallyTimeSpent" value="13655000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -494,7 +497,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14791666" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14791666" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -520,7 +523,8 @@
     <MESSAGE value="ciboire de git.....cinématique résolue pour le mouvement" />
     <MESSAGE value="collisions inclinées réglées!!! &#10;j'ai pas réussi a faire la méthode de vecteurs...trop brulé&#10;un coup fait je règle les collisions avec les rectangles...&#10;l'accélération en x va etre quelque chose.... :(" />
     <MESSAGE value="vecteurs de collision a perfectionner...&#10;balles immobiles sur plan droit ne passent plus au travers&#10;le temps est réglé" />
-    <option name="LAST_COMMIT_MESSAGE" value="vecteurs de collision a perfectionner...&#10;balles immobiles sur plan droit ne passent plus au travers&#10;le temps est réglé" />
+    <MESSAGE value="Interface améliorée" />
+    <option name="LAST_COMMIT_MESSAGE" value="Interface améliorée" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -663,8 +667,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1056">
-          <caret line="152" column="41" lean-forward="true" selection-start-line="152" selection-start-column="41" selection-end-line="152" selection-end-column="41" />
+        <state relative-caret-position="104">
+          <caret line="96" column="35" lean-forward="true" selection-start-line="96" selection-start-column="35" selection-end-line="96" selection-end-column="35" />
           <folding>
             <element signature="e#0#16814#0" expanded="true" />
             <element signature="e#2138#2139#0" expanded="true" />
