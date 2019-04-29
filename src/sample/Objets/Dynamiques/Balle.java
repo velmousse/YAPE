@@ -18,7 +18,7 @@ public class Balle extends Objet {
     protected ImagePattern pattern;
     protected double angle = 0;
     protected boolean turned = false;
-    private int width = 1000, height = 810;
+    private int width = 1000, height = 710;
     protected double pixel = 37.795275591;
     protected double gravite1 = pixel * 9.8;
     double tempsinitial = System.currentTimeMillis() / 1000.00;

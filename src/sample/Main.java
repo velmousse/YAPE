@@ -67,7 +67,9 @@ public class Main extends Application {
         group.getChildren().addAll(objets, uInterface);
 
         primaryStage.setTitle("");
-        scene = new Scene(group, 1210, 810);
+        primaryStage.setX(375);
+        primaryStage.setY(125);
+        scene = new Scene(group, 1210, 710);
 
 
         Group root = new Group();
@@ -75,7 +77,7 @@ public class Main extends Application {
 
         Text texte = new Text("La Machine Expérimentale");
         texte.setTextAlignment(TextAlignment.CENTER);
-        texte.setX(100);
+        texte.setX(140);
         texte.setY(100);
         texte.setFont(Font.font(30));
 
@@ -86,14 +88,11 @@ public class Main extends Application {
         newGame.setTranslateX(35);
         newGame.setTranslateY(300);
         newGame.setOnAction(event -> {
+            primaryStage.setX(375);
+            primaryStage.setY(125);
             primaryStage.setScene(scene);
             for (int i = 0; i < limites.length; i++)
                 limites[i] = 999;
-            /*  Pour JP
-            primaryStage.setX(0);
-            primaryStage.setY(0);
-            primaryStage.setHeight(810);
-            primaryStage.setWidth(1210); */
         });
 
         Button quitter = new Button("Quitter");
@@ -116,6 +115,8 @@ public class Main extends Application {
             numObjets = genese.getNumObjets();
             numBalles = genese.getNumBalles();
             numFixes = genese.getNumFixes();
+            primaryStage.setX(375);
+            primaryStage.setY(125);
             primaryStage.setScene(scene);
         });
 
@@ -204,7 +205,7 @@ public class Main extends Application {
 
         Button restart = new Button("Restart");
         restart.setTranslateX(1125);
-        restart.setTranslateY(765);
+        restart.setTranslateY(665);
         restart.setScaleX(1.5);
         restart.setScaleY(1.5);
         restart.setOnAction(event -> {
@@ -213,7 +214,7 @@ public class Main extends Application {
 
         Button start = new Button("Start");
         start.setTranslateX(1020);
-        start.setTranslateY(765);
+        start.setTranslateY(665);
         start.setScaleX(1.5);
         start.setScaleY(1.5);
         start.setOnAction(event -> {
