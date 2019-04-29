@@ -24,23 +24,26 @@ public class ObjetFixe extends Objet {
             switch (type) {
                 case 0:
                     //coté oblique
-                    double vecteurdecollision =vecteurcollisionneur((x+20),(y+20),-40,-40,dynamique.getX(),dynamique.getY());
+                    double vecteurdecollision = vecteurcollisionneur((x + 20), (y + 20), -40, -40, dynamique.getX(), dynamique.getY());
 
                     //coté horizontal
 
-                    double hvecteurdecollision =vecteurcollisionneur((x-20),(y+20),-40,0,dynamique.getX(),dynamique.getY());
+                    double hvecteurdecollision = vecteurcollisionneur((x - 20), (y + 20), -40, 0, dynamique.getX(), dynamique.getY());
 
                     //cote vertical
-                    double vvecteurdecollision = vecteurcollisionneur((x-20),(y-20),0,-40,dynamique.getX(),dynamique.getY());
+                    double vvecteurdecollision = vecteurcollisionneur((x - 20), (y - 20), 0, -40, dynamique.getX(), dynamique.getY());
 
 
-                    if (vvecteurdecollision - 7 <= dynamique.getRayon() && dynamique.getY() <= y + 20 && dynamique.getY() >= y - 20)
+                    if (vvecteurdecollision - dynamique.getRayon() <= dynamique.getRayon() && dynamique.getY() <= y + 20 && dynamique.getY() >= y - 20){
                         dynamique.setVx(-1 * dynamique.getVx());
-                    if (hvecteurdecollision - 7 <= dynamique.getRayon() && dynamique.getX() <= x + 20 && dynamique.getX() >= x - (20))
+                    if(dynamique.getVx()==0)
+                    {dynamique.setVx(-1*spring);}
+                    }
+                    else if (hvecteurdecollision - dynamique.getRayon() <= dynamique.getRayon() && dynamique.getX() <= x + 20 && dynamique.getX() >= x - (20))
                         dynamique.setVyi(-1 * dynamique.getVyi());
-                    if (vecteurdecollision - 7 <= dynamique.getRayon() && dynamique.getX() <= x + 20 && dynamique.getX() >= x - (20)) {
+                    else if (vecteurdecollision - dynamique.getRayon() <= dynamique.getRayon() && dynamique.getX() <= x + 20 && dynamique.getX() >= x - (20)) {
                         if (dynamique.getVx() == 0) {
-                            dynamique.setVx(1);
+                            dynamique.setVx(spring);
                         } else dynamique.setVyi(dynamique.getVyi() * -1);
                     }
                     if (dynamique.getVyi() <= 0 && dynamique.getVyi() > -.5 && vecteurdecollision > dynamique.getRayon()) {
@@ -53,23 +56,28 @@ public class ObjetFixe extends Objet {
 
                     if (!dynamique.isTurned()) {
 
-                            double vecteurdecollisionVerticalGauche= vecteurcollisionneur((x-40),(y-20),0,-40,dynamique.getX(),dynamique.getY());
-                            double vecteurdecollisionVerticalDroit= vecteurcollisionneur((x+40),(y-20),0,-40,dynamique.getX(),dynamique.getY());
-                            if ((vecteurdecollisionVerticalGauche-7 <=dynamique.getRayon()&& dynamique.getY() <= y + 20 && dynamique.getY() >= y - 20)||(vecteurdecollisionVerticalDroit-7<=dynamique.getRayon()&& dynamique.getY() <= y + 20 && dynamique.getY() >= y - 20))
-                                dynamique.setVx(-1 * spring);
-                            double vecteurdeCollisionHorizontalHaut= vecteurcollisionneur((x-40),(y-20),80,0,dynamique.getX(),dynamique.getY());
-                            double vecteurdeCollisionHorizontalBas= vecteurcollisionneur((x-40),(y+20),80,0,dynamique.getX(),dynamique.getY());
-                        if ((vecteurdeCollisionHorizontalHaut -dynamique.getRayon()<=dynamique.getRayon()&& dynamique.getX() <= x + 40 && dynamique.getX() >= x - 40)||(vecteurdeCollisionHorizontalBas-7<=dynamique.getRayon()&&dynamique.getX() <= x + 40 && dynamique.getX() >= x - 40))
-                        dynamique.setVyi(-1*dynamique.getVyi()*spring);
-                        if(dynamique.getVyi()<=0&&dynamique.getVyi()>-0.1){
-                            dynamique.setY(y-(20+dynamique.getRayon()*2));
-                        }
+                        double vecteurdecollisionVerticalGauche = vecteurcollisionneur((x - 40), (y - 20), 0, -40, dynamique.getX(), dynamique.getY());
+                        double vecteurdecollisionVerticalDroit = vecteurcollisionneur((x + 40), (y - 20), 0, 40, dynamique.getX(), dynamique.getY());
+                        double vecteurdeCollisionHorizontalHaut = vecteurcollisionneur((x - 40), (y - 20), 80, 0, dynamique.getX(), dynamique.getY());
+                        double vecteurdeCollisionHorizontalBas = vecteurcollisionneur((x - 40), (y + 20), 80, 0, dynamique.getX(), dynamique.getY());
 
-                            //if (dynamique.getVyf() <= 0 && dynamique.getVyf() > -5000) {
-                              //  dynamique.setVyf(0);
-                               // dynamique.setDy(0);
 
+                        if ((vecteurdecollisionVerticalGauche - dynamique.getRayon() <= dynamique.getRayon() && dynamique.getY() <= y + 20 && dynamique.getY() >= y - 20))
+                            dynamique.setVx(-1 * spring);
+                        if (vecteurdecollisionVerticalDroit-dynamique.getRayon()<= dynamique.getRayon() && dynamique.getY() <= y + 20 && dynamique.getY() >= y - 20)
+                            dynamique.setVx( spring);
+                        if ((vecteurdeCollisionHorizontalHaut - dynamique.getRayon() <= dynamique.getRayon() && dynamique.getX() <= x + 40 && dynamique.getX() >= x - 40) ) {
+                            dynamique.setVyi(-1 * dynamique.getVyi() * spring);
+                            if (dynamique.getVyi() <= 0 && dynamique.getVyi() > -0.1 && dynamique.getY() < y&&dynamique.getVx()==0) {
+                                dynamique.setVyf(0);
+                                dynamique.setDy(0);
+                                dynamique.setTempsinitial(dynamique.getTempsinitial()+10);
+                                dynamique.setY(y - (20 + dynamique.getRayon() * 2));
                             }
+                        }
+                        if(vecteurdeCollisionHorizontalBas - 7 <= dynamique.getRayon() && dynamique.getX() <= x + 40 && dynamique.getX() >= x - 40)
+                            dynamique.setVyi(-1 * dynamique.getVyi() * spring);
+                    }
 
 
                     break;
@@ -96,16 +104,17 @@ public class ObjetFixe extends Objet {
         }
         return retour;
     }
-    public double vecteurcollisionneur(double débutvecteurux, double debutvecteuruy, double longueurx,double longueury,double rayonx,double rayony){
-        double vvecteurux = rayonx-débutvecteurux;
-        double vvecteuruy = rayony-debutvecteuruy;
+
+    public double vecteurcollisionneur(double débutvecteurux, double debutvecteuruy, double longueurx, double longueury, double rayonx, double rayony) {
+        double vvecteurux = rayonx - débutvecteurux;
+        double vvecteuruy = rayony - debutvecteuruy;
         double vproduitscalaire = vvecteurux * longueurx + (vvecteuruy * longueury);
         double vnorme = (longueurx * longueurx) + (longueury * longueury);
         double vvecteurresultantx = vproduitscalaire / vnorme * longueurx;
         double vvecteurresultanty = vproduitscalaire / vnorme * longueury;
         double vnormevecteurresultant = Math.sqrt((vvecteurresultantx * vvecteurresultantx) + (vvecteurresultanty * vvecteurresultanty));
         double vnormevecteuru = Math.sqrt((vvecteurux * vvecteurux) + (vvecteuruy * vvecteuruy));
-        return   Math.sqrt((vnormevecteuru * vnormevecteuru) - (vnormevecteurresultant * vnormevecteurresultant));
+        return Math.sqrt((vnormevecteuru * vnormevecteuru) - (vnormevecteurresultant * vnormevecteurresultant));
     }
 
 }

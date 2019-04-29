@@ -16,7 +16,7 @@ import sample.Objets.Fixes.ObjetFixe;
 import static java.lang.System.currentTimeMillis;
 
 public class Balle extends Objet {
-    protected double diametre, vx = 0, vy = 0, gravite = 0.09, spring = 0, masse = 0,vxi=0.00,vxf=0,vyi=0.01,vyf=0,dy=0;
+    protected double diametre, vx = 0, vy = 0, gravite = 0.09, spring = 0, masse = 0,vxi=0.00,vxf=0,vyi=0.0,vyf=0,dy=0;
     protected ImagePattern pattern;
     protected double angle = 0;
     protected boolean turned = false;
@@ -51,19 +51,19 @@ public class Balle extends Objet {
                 double angle = Math.atan2(dy, dx),
                         targetX = (x + Math.cos(angle) * minDist),
                         targetY = (y + Math.sin(angle) * minDist),
-                        ax = ((targetX - autres.get(i).x) * spring),
-                        ay = ((targetY - autres.get(i).y) * spring);
+                        ax = ((targetX - autres.get(i).x) * 0.05),
+                        ay = ((targetY - autres.get(i).y) * 0.05);
 
                 if (autres.get(i).masse >= masse) {
                     vx  -= ax;
-                    vyf -= ay;
+                    vyi-= ay;
                     autres.get(i).vx += ax * (masse / autres.get(i).masse);
-                    autres.get(i).vyf += ay * (masse / autres.get(i).masse);
+                    autres.get(i).vyi += ay * (masse / autres.get(i).masse);
                 } else if (autres.get(i).masse <= masse) {
                     vx -= ax * (autres.get(i).masse / masse);
-                    vyf -= ay * (autres.get(i).masse / masse);
+                    vyi -= ay * (autres.get(i).masse / masse);
                     autres.get(i).vx += ax;
-                    autres.get(i).vyf += ay;
+                    autres.get(i).vyi += ay;
                 }
             }
         }
@@ -150,12 +150,12 @@ public class Balle extends Objet {
 
         if (x + diametre > width) {
             x = width - diametre;
-            vx *= friction;
+            vx *= friction/10;
 
 
         } else if (x - diametre < 0) {
             x = diametre;
-            vx *= friction;
+            vx *= friction/10;
 
         }
         if (y + diametre > height) {
@@ -174,7 +174,7 @@ public class Balle extends Objet {
     public Ellipse affichage() {
         Ellipse retour = new Ellipse(x, y, diametre, diametre);
         retour.setFill(pattern);
-        angle += vx;
+        angle += vx*.15;
         retour.setRotate(angle/2);
         retour.autosize();
         return retour;

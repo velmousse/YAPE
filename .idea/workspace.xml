@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8062ac53-74b7-4d0c-bef9-d7916647450f" name="Default" comment="collisions inclinées réglées!!! &#10;j'ai pas réussi a faire la méthode de vecteurs...trop brulé&#10;un coup fait je règle les collisions avec les rectangles...&#10;l'accélération en x va etre quelque chose.... :(">
+    <list default="true" id="8062ac53-74b7-4d0c-bef9-d7916647450f" name="Default" comment="vecteurs de collision a perfectionner...&#10;balles immobiles sur plan droit ne passent plus au travers&#10;le temps est réglé">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Tests/sample/Main$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Tests/sample/Main$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Tests/sample/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Tests/sample/Main.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Tests/sample/Objets/Dynamiques/Balle.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Tests/sample/Objets/Dynamiques/Balle.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Tests/sample/Objets/Fixes/ObjetFixe.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Tests/sample/Objets/Fixes/ObjetFixe.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/sample/Objets/Dynamiques/Balle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Objets/Dynamiques/Balle.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/sample/Objets/Fixes/ObjetFixe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Objets/Fixes/ObjetFixe.java" afterDir="false" />
     </list>
@@ -33,13 +31,16 @@
     <session id="-42243273">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="4" />
+          <entry key="project.closed" value="6" />
           <entry key="project.open.time.2" value="1" />
+          <entry key="project.open.time.27" value="1" />
           <entry key="project.open.time.30" value="1" />
+          <entry key="project.open.time.31" value="1" />
           <entry key="project.open.time.32" value="1" />
+          <entry key="project.open.time.39" value="1" />
           <entry key="project.open.time.42" value="1" />
           <entry key="project.open.time.48" value="1" />
-          <entry key="project.opened" value="5" />
+          <entry key="project.opened" value="8" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -54,14 +55,14 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="5057" />
-          <entry key="txt" value="291" />
+          <entry key="java" value="5396" />
+          <entry key="txt" value="450" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="5057" />
-          <entry key="PLAIN_TEXT" value="291" />
+          <entry key="JAVA" value="5396" />
+          <entry key="PLAIN_TEXT" value="450" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages">
@@ -79,8 +80,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sample/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="394">
-              <caret line="154" column="41" selection-start-line="154" selection-start-column="41" selection-end-line="154" selection-end-column="41" />
+            <state relative-caret-position="629">
+              <caret line="67" selection-start-line="67" selection-end-line="67" />
             </state>
           </provider>
         </entry>
@@ -88,8 +89,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sample/Objets/Dynamiques/Balle.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="544">
-              <caret line="137" column="51" selection-start-line="137" selection-start-column="51" selection-end-line="137" selection-end-column="51" />
+            <state relative-caret-position="1751">
+              <caret line="145" column="19" selection-start-line="145" selection-start-column="19" selection-end-line="145" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -97,7 +98,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sample/Objets/Objet.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
+            <state relative-caret-position="102">
               <caret line="9" column="21" selection-start-line="9" selection-start-column="21" selection-end-line="9" selection-end-column="21" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -118,8 +119,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sample/Objets/Fixes/ObjetFixe.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="64" column="71" selection-start-line="64" selection-start-column="71" selection-end-line="64" selection-end-column="71" />
+            <state relative-caret-position="204">
+              <caret line="70" column="129" selection-start-line="70" selection-start-column="129" selection-end-line="70" selection-end-column="129" />
             </state>
           </provider>
         </entry>
@@ -141,6 +142,7 @@
       <find>vx</find>
       <find>scene</find>
       <find>rayo</find>
+      <find>angle</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -180,7 +182,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -227,6 +228,7 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -328,7 +330,14 @@
       <option name="project" value="LOCAL" />
       <updated>1556432838280</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="vecteurs de collision a perfectionner...&#10;balles immobiles sur plan droit ne passent plus au travers&#10;le temps est réglé">
+      <created>1556511679373</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1556511679373</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -338,7 +347,7 @@
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.15355521" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.1603631" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="3" />
@@ -417,16 +426,17 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="ciboire de git.....cinématique résolue pour le mouvement" />
     <MESSAGE value="collisions inclinées réglées!!! &#10;j'ai pas réussi a faire la méthode de vecteurs...trop brulé&#10;un coup fait je règle les collisions avec les rectangles...&#10;l'accélération en x va etre quelque chose.... :(" />
-    <option name="LAST_COMMIT_MESSAGE" value="collisions inclinées réglées!!! &#10;j'ai pas réussi a faire la méthode de vecteurs...trop brulé&#10;un coup fait je règle les collisions avec les rectangles...&#10;l'accélération en x va etre quelque chose.... :(" />
+    <MESSAGE value="vecteurs de collision a perfectionner...&#10;balles immobiles sur plan droit ne passent plus au travers&#10;le temps est réglé" />
+    <option name="LAST_COMMIT_MESSAGE" value="vecteurs de collision a perfectionner...&#10;balles immobiles sur plan droit ne passent plus au travers&#10;le temps est réglé" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/sample/Objets/Fixes/ObjetFixe.java</url>
-          <line>59</line>
+          <line>66</line>
           <properties />
-          <option name="timeStamp" value="4" />
+          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -477,9 +487,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
           <caret line="176" selection-start-line="176" selection-end-line="176" />
-          <folding>
-            <element signature="e#5683#5684#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -511,23 +518,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Objets/Dynamiques/Bowling.java">
+    <entry file="file://$PROJECT_DIR$/src/sample/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="15" column="20" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="20" />
+        <state relative-caret-position="629">
+          <caret line="67" selection-start-line="67" selection-end-line="67" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Main.java">
+    <entry file="file://$PROJECT_DIR$/src/sample/Objets/Dynamiques/Balle.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="394">
-          <caret line="154" column="41" selection-start-line="154" selection-start-column="41" selection-end-line="154" selection-end-column="41" />
+        <state relative-caret-position="1751">
+          <caret line="145" column="19" selection-start-line="145" selection-start-column="19" selection-end-line="145" selection-end-column="19" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/Objets/Objet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
+        <state relative-caret-position="102">
           <caret line="9" column="21" selection-start-line="9" selection-start-column="21" selection-end-line="9" selection-end-column="21" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -542,17 +549,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Objets/Dynamiques/Balle.java">
+    <entry file="file://$PROJECT_DIR$/src/sample/Objets/Dynamiques/Bowling.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="137" column="51" selection-start-line="137" selection-start-column="51" selection-end-line="137" selection-end-column="51" />
+        <state relative-caret-position="170">
+          <caret line="15" column="20" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="20" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/Objets/Fixes/ObjetFixe.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="64" column="71" selection-start-line="64" selection-start-column="71" selection-end-line="64" selection-end-column="71" />
+        <state relative-caret-position="204">
+          <caret line="70" column="129" selection-start-line="70" selection-start-column="129" selection-end-line="70" selection-end-column="129" />
         </state>
       </provider>
     </entry>
