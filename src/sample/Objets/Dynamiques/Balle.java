@@ -14,14 +14,14 @@ import java.util.ArrayList;
 import sample.Objets.Fixes.ObjetFixe;
 
 public class Balle extends Objet {
-    protected double diametre, vx = 0, vy = 0, gravite = 0.09, spring = 0, masse = 0,vxi=0.00,vxf=0,vyi=0.01,vyf=0,dy=0;
+    protected double diametre, vx = 0, vy = 0, gravite = 0.09, spring = 0, masse = 0, vxi = 0.00, vxf = 0, vyi = 0.01, vyf = 0, dy = 0;
     protected ImagePattern pattern;
     protected double angle = 0;
     protected boolean turned = false;
     private int width = 1000, height = 810;
-    protected double pixel= 37.795275591;
-    protected double gravite1= pixel*9.8;
-    double tempsinitial= System.currentTimeMillis()/1000.00;
+    protected double pixel = 37.795275591;
+    protected double gravite1 = pixel * 9.8;
+    double tempsinitial = System.currentTimeMillis() / 1000.00;
 
     public void setVyi(double vyi) {
         this.vyi = vyi;
@@ -53,7 +53,7 @@ public class Balle extends Objet {
                         ay = ((targetY - autres.get(i).y) * spring);
 
                 if (autres.get(i).masse >= masse) {
-                    vx  -= ax;
+                    vx -= ax;
                     vyf -= ay;
                     autres.get(i).vx += ax * (masse / autres.get(i).masse);
                     autres.get(i).vyf += ay * (masse / autres.get(i).masse);
@@ -67,29 +67,49 @@ public class Balle extends Objet {
         }
     }
 
-    public double getRayon() {return diametre / 2;}
+    public double getRayon() {
+        return diametre / 2;
+    }
 
-    public double getX() {return x;}
+    public double getX() {
+        return x;
+    }
 
-    public double getY() {return y;}
+    public double getY() {
+        return y;
+    }
 
-    public double getVx() {return vx;}
+    public double getVx() {
+        return vx;
+    }
 
-    public double getVy() {return vy;}
+    public double getVy() {
+        return vy;
+    }
 
-    public boolean isTurned() {return turned;}
+    public boolean isTurned() {
+        return turned;
+    }
 
-    public void setX(double _x) {x = _x;}
+    public void setX(double _x) {
+        x = _x;
+    }
 
-    public void setY(double _y) {y = _y;}
+    public void setY(double _y) {
+        y = _y;
+    }
 
     public void setVx(double vx) {
         this.vx = vx;
     }
 
-    public void setVy(double multiplicateur) {vy *= multiplicateur;}
+    public void setVy(double multiplicateur) {
+        vy *= multiplicateur;
+    }
 
-    public void setTurned(boolean tourne) {turned = tourne;}
+    public void setTurned(boolean tourne) {
+        turned = tourne;
+    }
 
     public double getDy() {
         return dy;
@@ -133,15 +153,15 @@ public class Balle extends Objet {
 
     public void mouvement() {
 
-        double tempsfinal= (System.currentTimeMillis()/1000.00);
-        double deltat=tempsfinal-tempsinitial;
-        tempsinitial=tempsfinal;
+        double tempsfinal = (System.currentTimeMillis() / 1000.00);
+        double deltat = tempsfinal - tempsinitial;
+        tempsinitial = tempsfinal;
 
-            vyf = vyi + (gravite1 * deltat);
-            dy = (vyi + vyf) * deltat / 2;
-            vyi = vyf;
-            y += dy;
-            x += vx;
+        vyf = vyi + (gravite1 * deltat);
+        dy = (vyi + vyf) * deltat / 2;
+        vyi = vyf;
+        y += dy;
+        x += vx;
         if (vx > 0)
             vx -= 0.001;
         else if (vx < 0)
@@ -174,7 +194,7 @@ public class Balle extends Objet {
         Ellipse retour = new Ellipse(x, y, diametre, diametre);
         retour.setFill(pattern);
         angle += vx;
-        retour.setRotate(angle/2);
+        retour.setRotate(angle / 2);
         retour.autosize();
         return retour;
     }
