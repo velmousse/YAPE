@@ -16,7 +16,7 @@ public class Bowling extends Balle {
         autres = _a;
         diametre = 30;
         friction = -.5;
-        spring = 0.7;
+        spring = 0.1;
         masse = 5;
         pattern = new ImagePattern(image);
     }
