@@ -13,6 +13,8 @@ import java.util.ArrayList;
 
 import sample.Objets.Fixes.ObjetFixe;
 
+import static java.lang.System.currentTimeMillis;
+
 public class Balle extends Objet {
     protected double diametre, vx = 0, vy = 0, gravite = 0.09, spring = 0, masse = 0,vxi=0.00,vxf=0,vyi=0.01,vyf=0,dy=0;
     protected ImagePattern pattern;
@@ -21,7 +23,7 @@ public class Balle extends Objet {
     private int width = 1000, height = 810;
     protected double pixel= 37.795275591;
     protected double gravite1= pixel*9.8;
-    double tempsinitial= System.currentTimeMillis()/1000.00;
+    public double tempsinitial=0;
 
     public void setVyi(double vyi) {
         this.vyi = vyi;
@@ -133,10 +135,9 @@ public class Balle extends Objet {
 
     public void mouvement() {
 
-        double tempsfinal= (System.currentTimeMillis()/1000.00);
+        double tempsfinal= ((currentTimeMillis()+10)/1000.00);
         double deltat=tempsfinal-tempsinitial;
         tempsinitial=tempsfinal;
-
             vyf = vyi + (gravite1 * deltat);
             dy = (vyi + vyf) * deltat / 2;
             vyi = vyf;

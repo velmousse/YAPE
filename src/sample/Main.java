@@ -30,6 +30,8 @@ import sample.Objets.Fixes.PlanIncline;
 
 import java.util.ArrayList;
 
+import static java.lang.System.currentTimeMillis;
+
 public class Main extends Application {
     private final Boolean[] selection = new Boolean[4];
 
@@ -66,8 +68,7 @@ public class Main extends Application {
 
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.S)
-                timeline.play();
-        });
+                timeline.play();});
 
 
         scene.setOnMouseClicked(event -> {  //Ne pas oublier de vérifier s'il y a un imbriquement
@@ -133,7 +134,9 @@ public class Main extends Application {
                     int nombreDeBalles = 0, nombreDePlans = 0;
                     for (int i = 0; i < numObjets; i++) {
                         Object objet = objets.getChildren().get(i);
+
                         if (objet instanceof Ellipse) {
+                            balles.get(nombreDeBalles).setTempsinitial(currentTimeMillis()/1000.00);
                             balles.get(nombreDeBalles).mouvement();
                             balles.get(nombreDeBalles).collision();
                             objets.getChildren().set(i, balles.get(nombreDeBalles++).affichage());
@@ -149,7 +152,7 @@ public class Main extends Application {
                 }
             }
         }
-        ), new KeyFrame(Duration.millis(15)));
+        ), new KeyFrame(Duration.millis(5)));
         timeline.setCycleCount(Animation.INDEFINITE);
         primaryStage.show();
     }
