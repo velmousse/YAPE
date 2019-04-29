@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class ObjetFixe extends Objet {
     protected int type; //0 PlanIncline, 1 PlanDroit
     protected double spring;
-    protected ImagePattern image; //À voir plus tard
+    protected ImagePattern image;
 
     public void collision() {
         for (int i = 0; i < autres.size(); i++) {
@@ -104,6 +104,7 @@ public class ObjetFixe extends Objet {
                         x + 40, y - 20});
                 break;
         }
+        retour.setFill(image);
         return retour;
     }
 
