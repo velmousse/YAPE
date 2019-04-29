@@ -63,7 +63,7 @@ public class Main extends Application {
 
         Scene ecrandemarrage = new Scene(root, 600, 400);
         primaryStage.setTitle("");
-        scene = new Scene(group, 1210, 810);
+        scene = new Scene(group, 1210, 710);
 
 
         scene.setOnKeyPressed(event -> {
@@ -164,7 +164,7 @@ public class Main extends Application {
 
         Button restart = new Button("Restart");
         restart.setTranslateX(1125);
-        restart.setTranslateY(765);
+        restart.setTranslateY(665);
         restart.setScaleX(1.5);
         restart.setScaleY(1.5);
         restart.setOnAction(event -> {
@@ -173,7 +173,7 @@ public class Main extends Application {
 
         Button start = new Button("Start");
         start.setTranslateX(1020);
-        start.setTranslateY(765);
+        start.setTranslateY(665);
         start.setScaleX(1.5);
         start.setScaleY(1.5);
         start.setOnAction(event -> {

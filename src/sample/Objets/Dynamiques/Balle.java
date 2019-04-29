@@ -20,7 +20,7 @@ public class Balle extends Objet {
     protected ImagePattern pattern;
     protected double angle = 0;
     protected boolean turned = false;
-    private int width = 1000, height = 810;
+    private int width = 1000, height = 710;
     protected double pixel= 37.795275591;
     protected double gravite1= pixel*9.8;
     public double tempsinitial=0;
@@ -51,16 +51,16 @@ public class Balle extends Objet {
                 double angle = Math.atan2(dy, dx),
                         targetX = (x + Math.cos(angle) * minDist),
                         targetY = (y + Math.sin(angle) * minDist),
-                        ax = ((targetX - autres.get(i).x) * 0.05),
-                        ay = ((targetY - autres.get(i).y) * 0.05);
+                        ax = ((targetX - autres.get(i).x) * spring)*.5,
+                        ay = ((targetY - autres.get(i).y) * spring);
 
                 if (autres.get(i).masse >= masse) {
-                    vx  -= ax;
+                    vx  -= ax*.5;
                     vyi-= ay;
-                    autres.get(i).vx += ax * (masse / autres.get(i).masse);
+                    autres.get(i).vx += ax * (masse / autres.get(i).masse)*.5;
                     autres.get(i).vyi += ay * (masse / autres.get(i).masse);
-                } else if (autres.get(i).masse <= masse) {
-                    vx -= ax * (autres.get(i).masse / masse);
+                } else  {
+                    vx -= ax * (autres.get(i).masse / masse)*.5;
                     vyi -= ay * (autres.get(i).masse / masse);
                     autres.get(i).vx += ax;
                     autres.get(i).vyi += ay;
@@ -144,18 +144,18 @@ public class Balle extends Objet {
             y += dy;
             x += vx;
         if (vx > 0)
-            vx -= 0.001;
+            vx -= 0.01;
         else if (vx < 0)
-            vx += 0.001;
+            vx += 0.01;
 
         if (x + diametre > width) {
             x = width - diametre;
-            vx *= friction/10;
+            vx *= friction;
 
 
         } else if (x - diametre < 0) {
             x = diametre;
-            vx *= friction/10;
+            vx *= friction;
 
         }
         if (y + diametre > height) {

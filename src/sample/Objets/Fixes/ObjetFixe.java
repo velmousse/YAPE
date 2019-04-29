@@ -43,8 +43,10 @@ public class ObjetFixe extends Objet {
                         dynamique.setVyi(-1 * dynamique.getVyi());
                     else if (vecteurdecollision - dynamique.getRayon() <= dynamique.getRayon() && dynamique.getX() <= x + 20 && dynamique.getX() >= x - (20)) {
                         if (dynamique.getVx() == 0) {
-                            dynamique.setVx(spring);
-                        } else dynamique.setVyi(dynamique.getVyi() * -1);
+                            double vitessex=dynamique.getVx();
+                            vitessex+=spring;
+                            dynamique.setVx(vitessex);
+                        } else dynamique.setVyi(dynamique.getVyi() * -.5);
                     }
                     if (dynamique.getVyi() <= 0 && dynamique.getVyi() > -.5 && vecteurdecollision > dynamique.getRayon()) {
                         dynamique.setVyf(0);
