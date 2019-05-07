@@ -136,14 +136,14 @@ public class Main extends Application {
         root.getChildren().addAll(quitter, newGame, charger, texte);
 
 
-        scene.setOnKeyPressed(event -> {
+        scene.setOnKeyPressed(event -> { //pause = false;
             if (event.getCode() == KeyCode.S)
                 timeline.play();
         });
 
 
         scene.setOnMouseClicked(event -> {
-            if ((event.getX() > 0 && event.getX() < 1000) && pause) {
+            if ((event.getX() > 0 && event.getX() < 1000) /*&& pause*/) {
                 if (selection[0] && limites[0] > 0) {
                     balles.add(new Bowling((float) event.getX(), (float) event.getY(), balles.size(), balles, bowling));
                     objets.getChildren().add(balles.get(numBalles).affichage());
@@ -251,10 +251,10 @@ public class Main extends Application {
         start.setScaleX(1.5);
         start.setScaleY(1.5);
         start.setOnAction(event -> {
-            if (largage != null) {
+            //if (largage != null) {
                 timeline.play();
                 pause = false;
-            }
+            //}
         });
 
         Polygon triangle = new Polygon();
@@ -341,7 +341,7 @@ public class Main extends Application {
         boutonLargage.setY(210);
 
         Rectangle boutonFin = new Rectangle(80, 80);
-            boutonFin.setFill(Color.INDIANRED);
+        boutonFin.setFill(Color.INDIANRED);
         boutonFin.setStroke(Color.BLACK);
         boutonFin.setX(1115);
         boutonFin.setY(210);
