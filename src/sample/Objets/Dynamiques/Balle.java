@@ -52,28 +52,20 @@ public class Balle extends Objet {
             double distance = Math.sqrt(dx * dx + dy * dy);
             double minDist = autres.get(i).diametre + diametre;
             if (distance < minDist) {
-                double angle = Math.atan2(dy, dx),
-                        targetX = (x + Math.cos(angle) * minDist),
-                        targetY = (y + Math.sin(angle) * minDist),
-                        ax = ((targetX - autres.get(i).x) * 0.7)*.5,
-                        ay = ((targetY - autres.get(i).y) * 0.7);
+                double vxtempo= ((masse-autres.get(i).getMasse())/(masse+autres.get(i).getMasse())*vx)+2*autres.get(i).getMasse()/(masse+autres.get(i).getMasse())*autres.get(i).getVx();
+                autres.get(i).vx=((2*masse)/(masse+autres.get(i).getMasse())*vx)+(autres.get(i).getMasse()-masse)/(masse+autres.get(i).getMasse())*autres.get(i).vx;
+                vx=vxtempo;
 
-                if (autres.get(i).masse >= masse) {
-                    vx  -= ax*.5;
-                    if(vyi>0)
-                    vyi-= ay;
-                    if(vyi<=0)
-                    vyi=vyi*-1*spring;
-                    autres.get(i).vx += ax * (masse / autres.get(i).masse)*.5;
-                    autres.get(i).vyi += ay * (masse / autres.get(i).masse);
-                } else  {
-                    vx -= ax * (autres.get(i).masse / masse)*.5;
-                    vyi -= ay * (autres.get(i).masse / masse);
-                    autres.get(i).vx += ax*.5;
-                    autres.get(i).vyi += ay*.5;
-                }
+
+                double vytempo= ((masse-autres.get(i).getMasse())/(masse+autres.get(i).getMasse())*vyi)+2*autres.get(i).getMasse()/(masse+autres.get(i).getMasse())*autres.get(i).getVyi();
+                autres.get(i).vyi=((2*masse)/(masse+autres.get(i).getMasse())*vyi)+(autres.get(i).getMasse()-masse)/(masse+autres.get(i).getMasse())*autres.get(i).vyi;
+                vyi=vytempo;
             }
         }
+    }
+
+    public double getMasse() {
+        return masse;
     }
 
     public double getRayon() {return diametre / 2;}
@@ -147,6 +139,7 @@ public class Balle extends Objet {
         tempsinitial=tempsfinal;
             vyf = vyi + (gravite1 * deltat);
             dy = (vyi + vyf) * deltat / 2;
+
             vyi = vyf;
             y += dy;
             x += vx;
@@ -159,12 +152,10 @@ public class Balle extends Objet {
             x = width - diametre;
             vx *= friction;
 
-
         } else if (x - diametre < 0) {
             x = diametre;
 
             vx *= friction;
-
         }
         if (y + diametre > height) {
             y = height - diametre;
