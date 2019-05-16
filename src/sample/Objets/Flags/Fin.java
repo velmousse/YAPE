@@ -20,15 +20,25 @@ public class Fin {
     public boolean collision(Ellipse balle) {
         boolean retour = false;
 
-        double hvecteur = vecteurcollisionneur(x,y,0,-175,balle.getCenterX(),balle.getCenterY());
-        double rayonok= Math.sqrt((balle.getRadiusX()*balle.getRadiusX())+(balle.getRadiusY()*balle.getCenterY()));
-        if (hvecteur-balle.getRadiusY()<=balle.getRadiusY())
+        double hvecteur = vecteurcollisionneur(x,y,0,-176,balle.getCenterX(),balle.getCenterY());
+        double vecteurdecollisionVerticalDroit = vecteurcollisionneur((x + 176), (y +176), 0, 176, balle.getCenterX(),balle.getCenterY());
+        double vecteurdeCollisionHorizontalHaut = vecteurcollisionneur((x ), (y ), 176, 0, balle.getCenterX(),balle.getCenterY());
+        double vecteurdeCollisionHorizontalBas = vecteurcollisionneur((x), (y + 176), 176, 0, balle.getCenterX(),balle.getCenterY());
+
+
+        if(vecteurdeCollisionHorizontalBas <= balle.getRadiusX() && balle.getCenterX() <= x + 176 && balle.getCenterX() >= x)
+            retour=true;
+            if ((vecteurdeCollisionHorizontalHaut <= balle.getRadiusX() && balle.getCenterX() <= x + 176 && balle.getCenterX() >= x) )
+            retour=true;
+        if (hvecteur<=balle.getRadiusX()&& balle.getCenterY() <= y + 176 && balle.getCenterY() >= y)
             retour = true;
+        if(vecteurdecollisionVerticalDroit<=balle.getRadiusX()&&balle.getCenterY()<=y+176&&balle.getCenterY()>=y)
+            retour=true;
         return retour;
     }
 
     public Rectangle affichage() {
-        Rectangle retour = new Rectangle(175, 175);
+        Rectangle retour = new Rectangle(176, 176);
         retour.setFill(Color.INDIANRED);
         retour.setX(x);
         retour.setY(y);
