@@ -112,7 +112,30 @@ public class ObjetFixe extends Objet {
                         dynamique.setY(dynamique.getY() - 0.2);
                     }
 
+                break;
 
+                case 3:
+                    Rectangle zoneDaction= new Rectangle(x-40,y-100,x+40,y-20);
+
+                    double vecteurdecollisionVerticalGauche2 = vecteurcollisionneur((x - 40), (y - 100), 0, -100, dynamique.getX(), dynamique.getY());
+                    double vecteurdecollisionVerticalDroit2 = vecteurcollisionneur((x + 40), (y - 20), 0, 100, dynamique.getX(), dynamique.getY());
+                    double vecteurdeCollisionHorizontalHaut2 = vecteurcollisionneur((x - 40), (y - 100), 80, 0, dynamique.getX(), dynamique.getY());
+                    double vecteurdeCollisionHorizontalBas2 = vecteurcollisionneur((x - 40), (y - 20), 80, 0, dynamique.getX(), dynamique.getY());
+
+
+                    if(zoneDaction.contains(dynamique.getX(),dynamique.getY())&&dynamique.getX()+dynamique.getRayon()>=x-40&&dynamique.getX()+dynamique.getRayon()<=x+40&&dynamique.getY()+dynamique.getRayon()<y-20&&dynamique.getY()+dynamique.getRayon()>y-100)
+                    {
+                        if(!dynamique.isGraviteinversee()){
+                            dynamique.inversergravite();
+                        }
+                    }
+                    else{
+                        if(dynamique.isGraviteinversee()){
+                            dynamique.inversergravite();
+                            dynamique.setGraviteinversee(false);
+
+                        }
+                    }
             }
         }
     }
@@ -139,7 +162,15 @@ public class ObjetFixe extends Objet {
                         x + 20, y + 20,
                         x - 20, y + 20});
                 break;
+            case 3 :
+                retour.getPoints().addAll(new Double[]{
+                        x - 40, y - 20,
+                        x - 40, y + 20,
+                        x + 40, y + 20,
+                        x + 40, y - 20});
+                break;
         }
+
         retour.setFill(image);
         return retour;
     }

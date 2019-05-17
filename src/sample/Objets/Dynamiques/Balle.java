@@ -16,6 +16,21 @@ public class Balle extends Objet {
     protected double pixel = 37.795275591;
     protected double gravite1 = pixel * 9.8;
     public double tempsinitial = 0;
+    public boolean graviteinversee= false;
+
+
+    public boolean isGraviteinversee() {
+        return graviteinversee;
+    }
+
+    public void setGraviteinversee(boolean graviteinversee) {
+        this.graviteinversee = graviteinversee;
+    }
+
+    public void inversergravite(){
+        gravite1=gravite1*-1;
+        graviteinversee=true;
+    }
 
     public void setVyi(double vyi) {
         this.vyi = vyi;

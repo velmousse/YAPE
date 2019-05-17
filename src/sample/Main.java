@@ -29,13 +29,10 @@ import javafx.util.Duration;
 import sample.Objets.Dynamiques.Balle;
 import sample.Objets.Dynamiques.Bowling;
 import sample.Objets.Dynamiques.Tennis;
-import sample.Objets.Fixes.ObjetFixe;
-import sample.Objets.Fixes.PlanDroit;
-import sample.Objets.Fixes.PlanIncline;
+import sample.Objets.Fixes.*;
 import sample.Objets.Flags.Fin;
 import sample.Objets.Flags.Largage;
 import sample.Objets.GenerateurNiveaux;
-import sample.Objets.Fixes.PlanInclineInverse;
 
 import java.util.ArrayList;
 
@@ -43,7 +40,7 @@ import static java.lang.System.currentTimeMillis;
 
 public class Main extends Application {
 
-    private final Boolean[] selection = new Boolean[7];
+    private final Boolean[] selection = new Boolean[8];
     private Timeline timeline;
     private Image bowling = new Image("file:ressources/bowling.png");
     private Image tennis = new Image("file:ressources/tennis.png");
@@ -52,7 +49,7 @@ public class Main extends Application {
     private Group group, objets, flags, uInterface, labels;
     private boolean pause = true;
     private int numBalles = 0, numFixes = 0, numObjets = 0;
-    private int[] limites = new int[7];
+    private int[] limites = new int[8];
     private ArrayList<Balle> balles = new ArrayList<>();
     private ArrayList<ObjetFixe> fixes = new ArrayList<>();
     private GenerateurNiveaux genese;
@@ -104,7 +101,8 @@ public class Main extends Application {
                 limites[i] = 999;
             limites[4] = 1;
             limites[5] = 1;
-            limites[6]=999;
+            limites[6] = 999;
+            limites[7] = 999;
         });
 
         Button quitter = new Button("Quitter");
@@ -171,20 +169,25 @@ public class Main extends Application {
                     numFixes++;
                     numObjets++;
                 } else if (selection[4] && limites[4] > 0) {
-                    largage = new Largage(balles, (float) event.getX() - 175/2, (float) event.getY() - 175/2);
+                    largage = new Largage(balles, (float) event.getX() - 175 / 2, (float) event.getY() - 175 / 2);
                     flags.getChildren().add(largage.affichage());
                     limites[4]--;
                 } else if (selection[5] && limites[5] > 0) {
-                    fin = new Fin(balles, (float) event.getX() - 175/2, (float) event.getY() - 175/2);
+                    fin = new Fin(balles, (float) event.getX() - 175 / 2, (float) event.getY() - 175 / 2);
                     flags.getChildren().add(fin.affichage());
                     limites[5]--;
-                }
-                else if (selection[6] && limites[6] > 0) {
+                } else if (selection[6] && limites[6] > 0) {
                     fixes.add(new PlanInclineInverse((float) event.getX(), (float) event.getY(), fixes.size(), balles, wood));
                     objets.getChildren().add(fixes.get(numFixes).affichage());
                     numFixes++;
                     numObjets++;
                     limites[6]--;
+                } else if (selection[7] && limites[7] > 0) {
+                    fixes.add(new Elevateur((float) event.getX(), (float) event.getY(), fixes.size(), balles, wood));
+                    objets.getChildren().add(fixes.get(numFixes).affichage());
+                    limites[7]--;
+                    numFixes++;
+                    numObjets++;
                 }
                 for (int i = 0; i < limites.length; i++) {
                     Label label = (Label) labels.getChildren().get(i);
@@ -222,11 +225,7 @@ public class Main extends Application {
                             nombreDeBalles++;
                         } else if (objet instanceof Polygon) {
                             fixes.get(nombreDePlans).collision();
-                            if (((Polygon) objet).getPoints().size() == 6) {
-                                objets.getChildren().set(i, fixes.get(nombreDePlans++).affichage());
-                            } else if (((Polygon) objet).getPoints().size() == 8) {
-                                objets.getChildren().set(i, fixes.get(nombreDePlans++).affichage());
-                            }
+                            objets.getChildren().set(i, fixes.get(nombreDePlans++).affichage());
                         }
                     }
                 }
@@ -260,8 +259,8 @@ public class Main extends Application {
         start.setScaleY(1.5);
         start.setOnAction(event -> {
             //if (largage != null) {
-                timeline.play();
-                pause = false;
+            timeline.play();
+            pause = false;
             //}
         });
 
@@ -305,6 +304,11 @@ public class Main extends Application {
         textPlanDroit.setTranslateY(175);
         textPlanDroit.setTextFill(Color.FUCHSIA);
 
+        Label textElevateur = new Label(Integer.toString(limites[7]));
+        textPlanDroit.setTranslateX(1117);
+        textPlanDroit.setTranslateY(175);
+        textPlanDroit.setTextFill(Color.FUCHSIA);
+
         Label textLargage = new Label(Integer.toString(limites[4]));
         textLargage.setTranslateX(1017);
         textLargage.setTranslateY(275);
@@ -315,7 +319,7 @@ public class Main extends Application {
         textFin.setTranslateY(275);
         textFin.setTextFill(Color.FUCHSIA);
 
-        retour.getChildren().addAll(textBowling, textTennis, textPlanIncline, textPlanDroit, textLargage, textFin,textPlanInclineInverse);
+        retour.getChildren().addAll(textBowling, textTennis, textPlanIncline, textPlanDroit, textLargage, textFin, textPlanInclineInverse, textElevateur);
         return retour;
     }
 
@@ -347,6 +351,12 @@ public class Main extends Application {
         boutonPlanInclineInverse.setX(1015);
         boutonPlanInclineInverse.setY(310);
 
+        Rectangle boutonElevateur = new Rectangle(80, 80);
+        boutonElevateur.setFill(Color.LIGHTGRAY);
+        boutonElevateur.setStroke(Color.BLACK);
+        boutonElevateur.setX(1115);
+        boutonElevateur.setY(310);
+
         Rectangle boutonPlanDroit = new Rectangle(80, 80);
         boutonPlanDroit.setFill(new ImagePattern(wood));
         boutonPlanDroit.setStroke(Color.BLACK);
@@ -365,7 +375,7 @@ public class Main extends Application {
         boutonFin.setX(1115);
         boutonFin.setY(210);
 
-        retour.getChildren().addAll(boutonBowling, boutonTennis, boutonPlanIncline, boutonPlanDroit, boutonLargage, boutonFin,boutonPlanInclineInverse);
+        retour.getChildren().addAll(boutonBowling, boutonTennis, boutonPlanIncline, boutonPlanDroit, boutonLargage, boutonFin, boutonPlanInclineInverse, boutonElevateur);
 
         int nbOptions = 6;
         boutonBowling.setOnMouseClicked(event -> {
@@ -415,6 +425,16 @@ public class Main extends Application {
             boutonPlanDroit.setStroke(Color.GREEN);
             for (int i = 0; i < selection.length; i++) selection[i] = false;
             selection[3] = true;
+        });
+
+        boutonElevateur.setOnMouseClicked(event -> {
+            for (int i = 0; i < nbOptions; i++) {
+                Rectangle selection = (Rectangle) retour.getChildren().get(i);
+                selection.setStroke(Color.BLACK);
+            }
+            boutonElevateur.setStroke(Color.GREEN);
+            for (int i = 0; i < selection.length; i++) selection[i] = false;
+            selection[7] = true;
         });
 
         boutonLargage.setOnMouseClicked(event -> {
