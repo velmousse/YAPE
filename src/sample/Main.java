@@ -124,7 +124,7 @@ public class Main extends Application {
         charger.setOnAction(event -> {
             niveau = true;
             genese = new GenerateurNiveaux(objets, limites, balles, fixes, bowling, tennis, wood, numBalles, numFixes, numObjets, largage, fin, flags);
-            genese.niveau();
+            genese.niveau2();
             numObjets = genese.getNumObjets();
             numBalles = genese.getNumBalles();
             numFixes = genese.getNumFixes();

@@ -40,15 +40,22 @@ public class Balle extends Objet {
     public void collision() {
         for (int i = id + 1; i < autres.size(); i++) {
             double dx = autres.get(i).x - x;
-            double dy = autres.get(i).y - y;
+            double dy = (autres.get(i).y - y);
             double distance = Math.sqrt(dx * dx + dy * dy);
             double minDist = autres.get(i).diametre + diametre;
             if (distance < minDist) {
                 double angle = Math.atan2(dy, dx);
+                if(vx<1&&vx>-1) {
+                    double vxtempo = ((masse - autres.get(i).getMasse()) / (masse + autres.get(i).getMasse()) * vx) + 2 * autres.get(i).getMasse() / (masse + autres.get(i).getMasse()) * autres.get(i).getVx();
+                    autres.get(i).vx = ((2 * masse) / (masse + autres.get(i).getMasse()) * vx) + (autres.get(i).getMasse() - masse) / (masse + autres.get(i).getMasse()) * autres.get(i).vx + Math.cos(angle);
+                    vx = vxtempo - Math.cos(angle);
+                }
+                else{
+                    vx=vx*.0000005;
+                    autres.get(i).vx=-autres.get(i).vx*.00005;
+                }
 
-                double vxtempo = ((masse - autres.get(i).getMasse()) / (masse + autres.get(i).getMasse()) * vx) + 2 * autres.get(i).getMasse() / (masse + autres.get(i).getMasse()) * autres.get(i).getVx();
-                autres.get(i).vx = ((2 * masse) / (masse + autres.get(i).getMasse()) * vx) + (autres.get(i).getMasse() - masse) / (masse + autres.get(i).getMasse()) * autres.get(i).vx + Math.cos(angle);
-                vx = vxtempo - Math.cos(angle);
+
 
                 double vytempo = ((masse - autres.get(i).getMasse()) / (masse + autres.get(i).getMasse()) * vyi) + 2 * autres.get(i).getMasse() / (masse + autres.get(i).getMasse()) * autres.get(i).getVyi();
                 autres.get(i).vyi = ((2 * masse) / (masse + autres.get(i).getMasse()) * vyi) + (autres.get(i).getMasse() - masse) / (masse + autres.get(i).getMasse()) * autres.get(i).vyi + Math.sin(angle);
