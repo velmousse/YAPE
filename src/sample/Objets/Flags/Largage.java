@@ -21,20 +21,22 @@ public class Largage {
     public boolean collision(Ellipse balle) {
         boolean retour = false;
 
-        double hvecteur = vecteurcollisionneur(x,y,0,-176,balle.getCenterX(),balle.getCenterY());
-        double vecteurdecollisionVerticalDroit = vecteurcollisionneur((x + 176), (y +176), 0, 176, balle.getCenterX(),balle.getCenterY());
-        double vecteurdeCollisionHorizontalHaut = vecteurcollisionneur((x ), (y ), 176, 0, balle.getCenterX(),balle.getCenterY());
-        double vecteurdeCollisionHorizontalBas = vecteurcollisionneur((x), (y + 176), 176, 0, balle.getCenterX(),balle.getCenterY());
+        double hvecteur = vecteurcollisionneur(x, y, 0, -176, balle.getCenterX(), balle.getCenterY());
+        double vecteurdecollisionVerticalDroit = vecteurcollisionneur((x + 176), (y + 176), 0, 176, balle.getCenterX(), balle.getCenterY());
+        double vecteurdeCollisionHorizontalHaut = vecteurcollisionneur((x), (y), 176, 0, balle.getCenterX(), balle.getCenterY());
+        double vecteurdeCollisionHorizontalBas = vecteurcollisionneur((x), (y + 176), 176, 0, balle.getCenterX(), balle.getCenterY());
 
 
-        if(vecteurdeCollisionHorizontalBas <= balle.getRadiusX() && balle.getCenterX() <= x + 176 && balle.getCenterX() >= x)
-            retour=true;
-        if ((vecteurdeCollisionHorizontalHaut <= balle.getRadiusX() && balle.getCenterX() <= x + 176 && balle.getCenterX() >= x) )
-            retour=true;
-        if (hvecteur<=balle.getRadiusX()&& balle.getCenterY() <= y + 176 && balle.getCenterY() >= y)
+        if (vecteurdeCollisionHorizontalBas <= balle.getRadiusX() && balle.getCenterX() <= x + 176 && balle.getCenterX() >= x)
             retour = true;
-        if(vecteurdecollisionVerticalDroit<=balle.getRadiusX()&&balle.getCenterY()<=y+176&&balle.getCenterY()>=y)
-            retour=true;
+        if ((vecteurdeCollisionHorizontalHaut <= balle.getRadiusX() && balle.getCenterX() <= x + 176 && balle.getCenterX() >= x))
+            retour = true;
+        if (hvecteur <= balle.getRadiusX() && balle.getCenterY() <= y + 176 && balle.getCenterY() >= y)
+            retour = true;
+        if (vecteurdecollisionVerticalDroit <= balle.getRadiusX() && balle.getCenterY() <= y + 176 && balle.getCenterY() >= y)
+            retour = true;
+        if (this.affichage().contains(balle.getCenterX(), balle.getCenterY())) retour = true;
+
         return retour;
     }
 
@@ -45,6 +47,7 @@ public class Largage {
         retour.setY(y);
         return retour;
     }
+
     public double vecteurcollisionneur(double débutvecteurux, double debutvecteuruy, double longueurx, double longueury, double rayonx, double rayony) {
         double vvecteurux = rayonx - débutvecteurux;
         double vvecteuruy = rayony - debutvecteuruy;

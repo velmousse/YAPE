@@ -16,7 +16,7 @@ public class Balle extends Objet {
     protected double pixel = 37.795275591;
     protected double gravite1 = pixel * 9.8;
     public double tempsinitial = 0;
-    public boolean graviteinversee= false;
+    public boolean graviteinversee = false;
 
 
     public boolean isGraviteinversee() {
@@ -27,9 +27,9 @@ public class Balle extends Objet {
         this.graviteinversee = graviteinversee;
     }
 
-    public void inversergravite(){
-        gravite1=gravite1*-1;
-        graviteinversee=true;
+    public void inversergravite() {
+        gravite1 = gravite1 * -1;
+        graviteinversee = true;
     }
 
     public void setVyi(double vyi) {
@@ -55,22 +55,16 @@ public class Balle extends Objet {
     public void collision() {
         for (int i = id + 1; i < autres.size(); i++) {
             double dx = autres.get(i).x - x;
-            double dy = (autres.get(i).y - y);
+            double dy = autres.get(i).y - y;
             double distance = Math.sqrt(dx * dx + dy * dy);
             double minDist = autres.get(i).diametre + diametre;
             if (distance < minDist) {
                 double angle = Math.atan2(dy, dx);
-                if(vx<1&&vx>-1) {
-                    double vxtempo = ((masse - autres.get(i).getMasse()) / (masse + autres.get(i).getMasse()) * vx) + 2 * autres.get(i).getMasse() / (masse + autres.get(i).getMasse()) * autres.get(i).getVx();
-                    autres.get(i).vx = ((2 * masse) / (masse + autres.get(i).getMasse()) * vx) + (autres.get(i).getMasse() - masse) / (masse + autres.get(i).getMasse()) * autres.get(i).vx + Math.cos(angle);
-                    vx = vxtempo - Math.cos(angle);
-                }
-                else{
-                    vx=vx*.0000005;
-                    autres.get(i).vx=-autres.get(i).vx*.00005;
-                }
 
-
+                double targetX = x + Math.cos(angle) * minDist;
+                double ax = (targetX - autres.get(i).getX()) * spring;
+                vx -= ax;
+                autres.get(i).vx += ax;
 
                 double vytempo = ((masse - autres.get(i).getMasse()) / (masse + autres.get(i).getMasse()) * vyi) + 2 * autres.get(i).getMasse() / (masse + autres.get(i).getMasse()) * autres.get(i).getVyi();
                 autres.get(i).vyi = ((2 * masse) / (masse + autres.get(i).getMasse()) * vyi) + (autres.get(i).getMasse() - masse) / (masse + autres.get(i).getMasse()) * autres.get(i).vyi + Math.sin(angle);
@@ -179,9 +173,9 @@ public class Balle extends Objet {
         y += dy;
         x += vx;
         if (vx > 0)
-            vx -= 0.001;
+            vx -= 0.00001;
         else if (vx < 0)
-            vx += 0.001;
+            vx += 0.00001;
 
         if (x + diametre > width) {
             x = width - diametre;
@@ -209,7 +203,7 @@ public class Balle extends Objet {
         Ellipse retour = new Ellipse(x, y, diametre, diametre);
         retour.setFill(pattern);
         angle += vx;
-        retour.setRotate(angle / 2);
+        retour.setRotate(angle / 5);
         retour.autosize();
         return retour;
     }

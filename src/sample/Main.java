@@ -15,7 +15,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Ellipse;
@@ -45,6 +44,9 @@ public class Main extends Application {
     private Image bowling = new Image("file:ressources/bowling.png");
     private Image tennis = new Image("file:ressources/tennis.png");
     private Image wood = new Image("file:ressources/wood.jpg");
+    private Image planInclineDroit = new Image("file:ressources/planinclinedroit.png");
+    private Image planInclineGauche = new Image("file:ressources/planinclinegauche.png");
+    private Image elevateur = new Image("file:ressources/elevateur.png");
     private Scene scene;
     private Group group, objets, flags, uInterface, labels;
     private boolean pause = true;
@@ -53,9 +55,10 @@ public class Main extends Application {
     private ArrayList<Balle> balles = new ArrayList<>();
     private ArrayList<ObjetFixe> fixes = new ArrayList<>();
     private GenerateurNiveaux genese;
-    private boolean niveau = false;
+    private boolean niveau[] = {false, false, false};
     private Largage largage;
     private Fin fin;
+    private Scene ecranDemarrage;
 
     public static void main(String[] args) {
         launch(args);
@@ -79,7 +82,7 @@ public class Main extends Application {
 
 
         Group root = new Group();
-        Scene ecranDemarrage = new Scene(root, 600, 400);
+        ecranDemarrage = new Scene(root, 600, 400);
 
         Text texte = new Text("La Machine Expérimentale");
         texte.setTextAlignment(TextAlignment.CENTER);
@@ -97,12 +100,11 @@ public class Main extends Application {
             primaryStage.setX(375);
             primaryStage.setY(125);
             primaryStage.setScene(scene);
-            for (int i = 0; i < limites.length - 2; i++)
+            for (int i = 0; i < limites.length; i++)
                 limites[i] = 999;
-            limites[4] = 1;
-            limites[5] = 1;
-            limites[6] = 999;
-            limites[7] = 999;
+            limites[4] = 0;
+            limites[5] = 0;
+            limites[7] = 1;
         });
 
         Button quitter = new Button("Quitter");
@@ -120,9 +122,9 @@ public class Main extends Application {
         charger.setTranslateY(300);
         charger.setTranslateX(235);
         charger.setOnAction(event -> {
-            niveau = true;
-            genese = new GenerateurNiveaux(objets, limites, balles, fixes, bowling, tennis, wood, numBalles, numFixes, numObjets, largage, fin, flags);
-            genese.niveau2();
+            niveau[0] = true;
+            genese = new GenerateurNiveaux(objets, limites, balles, fixes, bowling, tennis, wood, numBalles, numFixes, numObjets, largage, fin, flags, elevateur);
+            genese.niveau();
             numObjets = genese.getNumObjets();
             numBalles = genese.getNumBalles();
             numFixes = genese.getNumFixes();
@@ -135,27 +137,38 @@ public class Main extends Application {
 
         root.getChildren().addAll(quitter, newGame, charger, texte);
 
-
-        scene.setOnKeyPressed(event -> { //pause = false;
-            if (event.getCode() == KeyCode.S)
-                timeline.play();
-        });
-
-
         scene.setOnMouseClicked(event -> {
-            if ((event.getX() > 0 && event.getX() < 1000) /*&& pause*/) {
+            if ((event.getX() > 0 && event.getX() < 1000) && pause) {
                 if (selection[0] && limites[0] > 0) {
                     balles.add(new Bowling((float) event.getX(), (float) event.getY(), balles.size(), balles, bowling));
-                    objets.getChildren().add(balles.get(numBalles).affichage());
-                    limites[0]--;
-                    numBalles++;
-                    numObjets++;
+                    if (niveau[0] || niveau[1] && niveau[2]) {
+                        if (largage.collision(balles.get(numBalles).affichage())) {
+                            objets.getChildren().add(balles.get(numBalles).affichage());
+                            limites[0]--;
+                            numBalles++;
+                            numObjets++;
+                        } else balles.remove(numBalles);
+                    } else {
+                        objets.getChildren().add(balles.get(numBalles).affichage());
+                        limites[0]--;
+                        numBalles++;
+                        numObjets++;
+                    }
                 } else if (selection[1] && limites[1] > 0) {
                     balles.add(new Tennis((float) event.getX(), (float) event.getY(), balles.size(), balles, tennis));
-                    objets.getChildren().add(balles.get(numBalles).affichage());
-                    limites[1]--;
-                    numBalles++;
-                    numObjets++;
+                    if (niveau[0] || niveau[1] || niveau[2]) {
+                        if (largage.collision(balles.get(numBalles).affichage())) {
+                            objets.getChildren().add(balles.get(numBalles).affichage());
+                            limites[1]--;
+                            numBalles++;
+                            numObjets++;
+                        } else balles.remove(numBalles);
+                    } else {
+                        objets.getChildren().add(balles.get(numBalles).affichage());
+                        limites[1]--;
+                        numBalles++;
+                        numObjets++;
+                    }
                 } else if (selection[2] && limites[2] > 0) {
                     fixes.add(new PlanIncline((float) event.getX(), (float) event.getY(), fixes.size(), balles, wood));
                     objets.getChildren().add(fixes.get(numFixes).affichage());
@@ -183,7 +196,7 @@ public class Main extends Application {
                     numObjets++;
                     limites[6]--;
                 } else if (selection[7] && limites[7] > 0) {
-                    fixes.add(new Elevateur((float) event.getX(), (float) event.getY(), fixes.size(), balles, wood));
+                    fixes.add(new Elevateur((float) event.getX(), (float) event.getY(), fixes.size(), balles, elevateur));
                     objets.getChildren().add(fixes.get(numFixes).affichage());
                     limites[7]--;
                     numFixes++;
@@ -219,7 +232,22 @@ public class Main extends Application {
                                     reussite.setHeaderText("Complétion du niveau");
                                     reussite.setContentText("Vous avez complété le niveau");
                                     reussite.show();
+                                    int level = 0;
+                                    for (int n = 0; n < niveau.length; n++) {
+                                        if (niveau[n] && n < niveau.length - 1) level = n;
+                                        niveau[n] = false;
+                                    }
                                     resetScene();
+                                    niveau[level + 1] = true;
+                                    genese = new GenerateurNiveaux(objets, limites, balles, fixes, bowling, tennis, wood, numBalles, numFixes, numObjets, largage, fin, flags, elevateur);
+                                    if (niveau[0]) genese.niveau();
+                                    else if (niveau[1]) genese.niveau2();
+                                    else genese.niveau3();
+                                    numObjets = genese.getNumObjets();
+                                    numBalles = genese.getNumBalles();
+                                    numFixes = genese.getNumFixes();
+                                    fin = genese.getFin();
+                                    largage = genese.getLargage();
                                 }
                             }
                             nombreDeBalles++;
@@ -235,10 +263,10 @@ public class Main extends Application {
 
         timeline.setCycleCount(Animation.INDEFINITE);
         primaryStage.show();
-        setInterface();
+        setInterface(primaryStage);
     }
 
-    private void setInterface() {
+    private void setInterface(Stage stage) {
         Rectangle menuDroit = new Rectangle(300, 900, Color.LIGHTGRAY);
         menuDroit.setX(1000);
         menuDroit.setY(0);
@@ -258,22 +286,25 @@ public class Main extends Application {
         start.setScaleX(1.5);
         start.setScaleY(1.5);
         start.setOnAction(event -> {
-            //if (largage != null) {
             timeline.play();
             pause = false;
-            //}
         });
 
-        Polygon triangle = new Polygon();
-        triangle.getPoints().addAll(new Double[]{
-                1015.0 + 25, 190.0 - 20,
-                1015.0 + 25, 150.0 - 20,
-                1055.0 + 25, 190.0 - 20});
-        triangle.setFill(new ImagePattern(wood));
+        Button menu = new Button("Menu");
+        menu.setTranslateX(1125);
+        menu.setTranslateY(620);
+        menu.setScaleX(1.5);
+        menu.setScaleY(1.5);
+        menu.setOnAction(event -> {
+              stage.setScene(ecranDemarrage);
+            if (niveau[0] || niveau[1] || niveau[2])
+                for (int i = 0; i < niveau.length; i++) niveau[i] = false;
+            resetScene();
+        });
 
         Group selections = setSelections();
         labels = setLabels();
-        uInterface.getChildren().addAll(menuDroit, restart, start, selections, labels, triangle);
+        uInterface.getChildren().addAll(menuDroit, restart, start, menu, selections, labels);
     }
 
     private Group setLabels() {
@@ -294,20 +325,15 @@ public class Main extends Application {
         textPlanIncline.setTranslateY(175);
         textPlanIncline.setTextFill(Color.FUCHSIA);
 
-        Label textPlanInclineInverse = new Label(Integer.toString(limites[6]));
-        textPlanIncline.setTranslateX(1017);
-        textPlanIncline.setTranslateY(275);
-        textPlanIncline.setTextFill(Color.FUCHSIA);
-
         Label textPlanDroit = new Label(Integer.toString(limites[3]));
         textPlanDroit.setTranslateX(1117);
         textPlanDroit.setTranslateY(175);
         textPlanDroit.setTextFill(Color.FUCHSIA);
 
         Label textElevateur = new Label(Integer.toString(limites[7]));
-        textPlanDroit.setTranslateX(1117);
-        textPlanDroit.setTranslateY(175);
-        textPlanDroit.setTextFill(Color.FUCHSIA);
+        textElevateur.setTranslateX(1117);
+        textElevateur.setTranslateY(375);
+        textElevateur.setTextFill(Color.FUCHSIA);
 
         Label textLargage = new Label(Integer.toString(limites[4]));
         textLargage.setTranslateX(1017);
@@ -318,6 +344,11 @@ public class Main extends Application {
         textFin.setTranslateX(1117);
         textFin.setTranslateY(275);
         textFin.setTextFill(Color.FUCHSIA);
+
+        Label textPlanInclineInverse = new Label(Integer.toString(limites[6]));
+        textPlanInclineInverse.setTranslateX(1017);
+        textPlanInclineInverse.setTranslateY(375);
+        textPlanInclineInverse.setTextFill(Color.FUCHSIA);
 
         retour.getChildren().addAll(textBowling, textTennis, textPlanIncline, textPlanDroit, textLargage, textFin, textPlanInclineInverse, textElevateur);
         return retour;
@@ -340,19 +371,13 @@ public class Main extends Application {
         boutonTennis.setY(10);
 
         Rectangle boutonPlanIncline = new Rectangle(80, 80);
-        boutonPlanIncline.setFill(Color.LIGHTGRAY);
+        boutonPlanIncline.setFill(new ImagePattern(planInclineDroit));
         boutonPlanIncline.setStroke(Color.BLACK);
         boutonPlanIncline.setX(1015);
         boutonPlanIncline.setY(110);
 
-        Rectangle boutonPlanInclineInverse = new Rectangle(80, 80);
-        boutonPlanInclineInverse.setFill(Color.LIGHTGRAY);
-        boutonPlanInclineInverse.setStroke(Color.BLACK);
-        boutonPlanInclineInverse.setX(1015);
-        boutonPlanInclineInverse.setY(310);
-
         Rectangle boutonElevateur = new Rectangle(80, 80);
-        boutonElevateur.setFill(Color.LIGHTGRAY);
+        boutonElevateur.setFill(new ImagePattern(elevateur));
         boutonElevateur.setStroke(Color.BLACK);
         boutonElevateur.setX(1115);
         boutonElevateur.setY(310);
@@ -375,9 +400,15 @@ public class Main extends Application {
         boutonFin.setX(1115);
         boutonFin.setY(210);
 
+        Rectangle boutonPlanInclineInverse = new Rectangle(80, 80);
+        boutonPlanInclineInverse.setFill(new ImagePattern(planInclineGauche));
+        boutonPlanInclineInverse.setStroke(Color.BLACK);
+        boutonPlanInclineInverse.setX(1015);
+        boutonPlanInclineInverse.setY(310);
+
         retour.getChildren().addAll(boutonBowling, boutonTennis, boutonPlanIncline, boutonPlanDroit, boutonLargage, boutonFin, boutonPlanInclineInverse, boutonElevateur);
 
-        int nbOptions = 6;
+        int nbOptions = 8;
         boutonBowling.setOnMouseClicked(event -> {
             for (int i = 0; i < nbOptions; i++) {
                 Rectangle selection = (Rectangle) retour.getChildren().get(i);
@@ -407,6 +438,7 @@ public class Main extends Application {
             for (int i = 0; i < selection.length; i++) selection[i] = false;
             selection[2] = true;
         });
+
         boutonPlanInclineInverse.setOnMouseClicked(event -> {
             for (int i = 0; i < nbOptions; i++) {
                 Rectangle selection = (Rectangle) retour.getChildren().get(i);
@@ -466,7 +498,8 @@ public class Main extends Application {
         fixes.clear();
         objets.getChildren().clear();
         flags.getChildren().clear();
-        if (niveau) {
+
+        if (niveau[0]) {
             genese.resetGenerateur();
             genese.niveau();
             numObjets = genese.getNumObjets();
@@ -474,14 +507,31 @@ public class Main extends Application {
             numFixes = genese.getNumFixes();
             fin = genese.getFin();
             largage = genese.getLargage();
+        } else if (niveau[1]) {
+            genese.resetGenerateur();
+            genese.niveau2();
+            numObjets = genese.getNumObjets();
+            numBalles = genese.getNumBalles();
+            numFixes = genese.getNumFixes();
+            fin = genese.getFin();
+            largage = genese.getLargage();
+        } else if (niveau[2]) {
+            genese.resetGenerateur();
+            genese.niveau3();
+            numObjets = genese.getNumObjets();
+            numBalles = genese.getNumBalles();
+            numFixes = genese.getNumFixes();
+            fin = genese.getFin();
+            largage = genese.getLargage();
         } else {
-            numBalles = 0;
-            numFixes = 0;
-            numObjets = 0;
-            for (int i = 0; i < limites.length - 2; i++)
-                limites[i] = 999;
-            limites[4] = 1;
-            limites[5] = 1;
+                numBalles = 0;
+                numFixes = 0;
+                numObjets = 0;
+                for (int i = 0; i < limites.length - 2; i++)
+                    limites[i] = 999;
+                limites[4] = 0;
+                limites[5] = 0;
+                limites[7] = 1;
         }
         pause = true;
     }
